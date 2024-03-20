@@ -1,0 +1,30 @@
+
+.card:hover{
+    transform: none;
+}
+.card:hover .cardImage{
+    height: auto;
+}
+
+.card h2{
+    font-weight: 500;
+    font-size: 24px;
+    text-align: center;
+    width:auto;
+    height: 75px;
+    line-height: 130%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-left: 10px solid #9fbdd8;
+    border-right: 10px solid rgb(159, 189, 216);
+    background-color: rgb(203, 220, 236);
+    padding-top: 10px;
+}
+
+.cardImage{
+    margin-left: auto;
+    margin-right:auto ;
+    width: 90%;
+    height: auto;
+    border-radius: 10px;
+}
