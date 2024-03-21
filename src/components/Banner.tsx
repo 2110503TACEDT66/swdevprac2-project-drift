@@ -27,19 +27,19 @@ export default function Banner(){
             <Image className="absolute object-cover" src={imgSrcs[imgIdx]} alt={"Banner"} fill={true} priority={true}/>
             {
                 session
-                    ?<div className="absolute top-5 right-1 z-50 p-2 font-kanit font-medium text-xl text-white border-l-4 border-white bg-black/20 backdrop-blur-md shadow-lg">
-                        <span className="text-green-400">Welcome </span>
+                    ?<div className="absolute top-3 right-1 z-50 p-2 font-kanit font-medium text-xl text-slate-100 border-l-4 border-white bg-black/35 backdrop-blur-lg shadow-lg">
+                        <span className="text-green-500">Welcome </span>
                         {session?.user.name}
                      </div>
                     :""
             }
 
-            <div className="absolute font-kanit top-20 left-1/2 -translate-x-1/2 pt-7 pb-4 pl-2 pr-2 w-[90%] text-center rounded-sm bg-white/40 backdrop-blur-md shadow-xl z-50">
+            <div className="absolute font-kanit top-16 left-1/2 -translate-x-1/2 pt-7 pb-4 pl-2 pr-2 w-[90%] text-center rounded-sm bg-white/40 backdrop-blur-md shadow-xl z-50">
                 <h1 className="text-5xl mb-5">Hotel Booking</h1>
                 <p className="text-2xl font-[300]">Fast and Easy - For you to spend your time enjoying your vacation</p>
             </div>
 
-            <button onClick={(e)=>{e.stopPropagation(); router.push("/hospital")}} className="absolute font-kanit font-[400] text-2xl right-10 bottom-10 w-fit h-fit p-3 rounded-lg bg-white/30 backdrop-blur-md shadow-xl z-40 hover:ring-2 hover:ring-slate-100">
+            <button onClick={(e)=>{e.stopPropagation(); router.push("/hospital")}} className="absolute font-kanit font-[400] text-2xl right-12 bottom-10 w-fit h-fit p-3 rounded-lg bg-white/30 backdrop-blur-md shadow-xl z-40 hover:text-slate-100 hover:ring-2 hover:ring-slate-100 transition-all">
                 Select Hotel
             </button>
         </div>

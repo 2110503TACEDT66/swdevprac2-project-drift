@@ -22,7 +22,7 @@ export default async function RootLayout(
 
   return (
     <html lang="en" className='h-full w-full font-kanit'>
-      <body className='h-full bg-blue-100'>
+      <body className='h-full bg-gray-900'>
         
         <NextAuthProvider session={session}>
           <TopMenu/>

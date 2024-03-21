@@ -2,25 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import Card from "./Card";
 
-export default async function HospitalCatalog({hospitalsJson}:{hospitalsJson:Promise<HospitalJson>}){
+export default async function HospitalCatalog({hotelsJson}:{hotelsJson:Promise<HotelJson>}){
     
-    const hospitalReady = await hospitalsJson;
+    const hotelsReady = await hotelsJson;
 
     return(
-        <div className="flex flex-row flex-nowrap gap-x-4 w-full justify-center">
-
-            <div className="bg-blue-100 h-fit min-h-full">
-                <div className="flex flex-row flex-wrap justify-center gap-x-12 gap-y-10 pt-10 pb-10">
-                    {
-                        hospitalReady.data.map((elem , idx)=>(
-                            <Link key={idx} href={`/hospital/${elem.id}`}>
-                                <Card data={elem}/>
-                            </Link>
-                        ))
-                    }
-                </div>
+            <div className="flex flex-row flex-wrap justify-start mx-auto w-[95%] gap-x-5 gap-y-10 pt-10 pb-10">
+                {
+                    hotelsReady.data.map((elem , idx)=>(
+                        <Link key={idx} href={`/hospital/${elem.id}`} className="">
+                            <Card data={elem}/>
+                        </Link>
+                    ))
+                }
             </div>
-
-        </div>
-    )
+        )
 }

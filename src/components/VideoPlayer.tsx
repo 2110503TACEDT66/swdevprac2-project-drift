@@ -14,7 +14,7 @@ export default function VideoPlayer({vdoSrc,isPlaying}:{vdoSrc:string , isPlayin
     },[isPlaying])
 
     return(
-        <video ref={videoRef} loop muted width={"400px"}>
+        <video ref={videoRef} loop muted width={"500px"} className="rounded-md">
             <source src={vdoSrc}/>
         </video>
     )

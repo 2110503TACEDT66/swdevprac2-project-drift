@@ -22,7 +22,7 @@ export default function InteractiveCard(props:{children:React.ReactNode , hid:st
 
     return(
 
-        <div className="flex flex-col flex-nowrap bg-white w-[320px] h-[450px] gap-x-[15px] rounded-lg shadow-lg" 
+        <div className="flex flex-col flex-nowrap bg-gray-800 w-[320px] h-[450px] gap-x-[15px] rounded-lg shadow-lg border-[1px] border-gray-700" 
             onMouseOver={(e)=>onCardSelected(e)} onMouseOut={(e)=>onCardSelected(e)}
         >
             {props.children}

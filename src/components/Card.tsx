@@ -3,20 +3,18 @@ import InteractiveCard from "./InteractiveCard"
 import Rating from "./Rating"
 
 export default function Card(
-    {data}:{data:HospitalItem}
+    {data}:{data:HotelItem}
     ){
     return(
         <InteractiveCard hid={data.id}>
-            <Image src={data.picture} className="  rounded-t-lg" width={"350"} height={"250"} alt={""}/>
-            <h2 className=" font-kanit text-[20px] text-slate-700 flex font-medium w-full min-h-[45px] h-fit mb-2 bg-sky-200 text-center justify-center items-center leading-tight">
+            <Image src={"https://picsum.photos/350/250"} className="  rounded-t-lg" width={"350"} height={"250"} alt={""}/>
+            <h2 className=" font-kanit text-2xl text-gray-50 flex font-normal w-full min-h-[45px] h-fit mb-2 bg-gray-900 text-center justify-center items-center leading-tight">
                 {data.name}
             </h2>
 
-            <ul className="pl-3">
-                <li> <b>Address:</b> {data.address}</li>
+            <ul className="pl-3 text-gray-100 font-light text-lg">
                 <li> <b>District:</b> {data.district}</li>
                 <li> <b>Province:</b> {data.province}</li>
-                <li> <b>Postal Code:</b> {data.postalcode}</li>
                 <li> <b>TEL:</b> {data.tel}</li>
             </ul>
      
