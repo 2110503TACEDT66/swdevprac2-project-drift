@@ -15,9 +15,14 @@ export default async function TopMenu(){
                     ?   <Link href={"api/auth/signout"} className="w-fit h-fit text-gray-100 p-2 pl-3 pr-3 mt-auto mb-auto text-xl font-bold hover:bg-slate-700 hover:rounded-2xl" underline="none">
                             <div>Sign-Out</div>
                         </Link>
-                    :   <Link href={"api/auth/signin"} className="w-fit h-fit text-gray-100 p-1 pl-3 pr-3 mt-auto mb-auto text-xl font-bold hover:bg-slate-700 hover:rounded-2xl" underline="none">
-                            <div>Sign-In</div>
-                        </Link>
+                    :   <div className="flex flex-row justify-center items-center w-fit h-full">
+                            <Link href={"api/auth/signin"} className="w-fit h-fit text-gray-100 p-1 pl-3 pr-3 mt-auto mb-auto text-xl font-bold hover:bg-slate-700 hover:rounded-2xl" underline="none">
+                                <div>Sign-In</div>
+                            </Link>
+                            <Link href={"api/auth/register"} className="w-fit h-fit text-gray-100 p-2 pl-3 pr-3 mt-auto mb-auto text-xl font-bold hover:bg-slate-700 hover:rounded-2xl" underline="none">
+                                <div>Register</div>
+                            </Link>
+                        </div>
             }
             
             <TopMenuItem title={"Booking"} pageRef="/booking"/>
