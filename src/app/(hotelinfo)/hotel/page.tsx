@@ -1,5 +1,4 @@
-import HospitalCatalog from "@/components/HospitalCatalog";
-import getHospitals from "@/libs/getHospitals";
+import HotelCatalog from "@/components/HotelCatalog";
 import getHotels from "@/libs/getHotels";
 import { LinearProgress } from "@mui/material";
 import { Suspense } from "react";
@@ -11,7 +10,7 @@ export default function Page(){
 
     return(
         <Suspense fallback={<LinearProgress/>}>
-            <HospitalCatalog hotelsJson={hotels} />
+            <HotelCatalog hotelsJson={hotels} />
         </Suspense>
     )
 }

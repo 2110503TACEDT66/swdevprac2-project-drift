@@ -1,13 +1,17 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Kanit } from 'next/font/google'
 import TopMenu from '@/components/TopMenu'
 import { getServerSession } from 'next-auth'
 import { authOptions } from './api/auth/[...nextauth]/route'
 import NextAuthProvider from '@/providers/NextAuthProvider'
 
 
-const inter = Inter({ subsets: ['latin'] })
+const kanit = Kanit({
+  weight: '400',
+  subsets: ['latin'],
+})
+
 
 export const metadata: Metadata = {
   title: 'Hotel Booking',
@@ -21,7 +25,7 @@ export default async function RootLayout(
   const session = await getServerSession(authOptions);
 
   return (
-    <html lang="en" className='h-full w-full font-kanit'>
+    <html lang="en" className={`h-full w-full ${kanit.className}`}>
       <body className='h-full bg-gray-900'>
         
         <NextAuthProvider session={session}>

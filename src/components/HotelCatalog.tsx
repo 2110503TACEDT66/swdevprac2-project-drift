@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Card from "./Card";
 
-export default async function HospitalCatalog({hotelsJson}:{hotelsJson:Promise<HotelJson>}){
+export default async function HotelCatalog({hotelsJson}:{hotelsJson:Promise<HotelJson>}){
     
     const hotelsReady = await hotelsJson;
 
