@@ -4,6 +4,7 @@ import { addBooking } from '@/redux/features/bookSlice';
 import { AppDispatch } from '@/redux/store';
 import { TextField, Select, MenuItem} from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
+import { getSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -11,6 +12,9 @@ import { useDispatch } from 'react-redux';
 
 
 export default function Home() {
+
+  const user = getSession();
+  console.log(user);
 
   //set selected hotel if user come from hotelCatalog
   const urlParams = useSearchParams();
