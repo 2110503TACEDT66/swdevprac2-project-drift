@@ -43,8 +43,8 @@ export default function Banner(){
             absolute font-[100] text-md right-7 bottom-6 w-fit h-fit p-3 rounded-lg bg-white/30 backdrop-blur-md shadow-xl z-40 hover:text-slate-100 hover:ring-2 hover:ring-slate-100 transition-all
             md:text-xl md:right-10 md:bottom-8
             lg:text-2xl lg:right-12 lg:bottom-10
-            xl:text-3xl xl:right-12 xl:bottom-10 xl:p-5 xl:rounded-xl
-            2xl:text-4xl 2xl:right-15 2xl:bottom-12 2xl:p-7 2xl:rounded-2xl">
+            xl:text-2xl xl:right-12 xl:bottom-10 xl:p-4 xl:rounded-xl
+            ">
                 Select Hotel
             </button>
         </div>

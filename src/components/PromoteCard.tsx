@@ -17,7 +17,7 @@ export default function PromoteCard(){
             <div className="flex flex-col mt-3 flex-nowrap">
                 <div className="text-2xl font-normal mb-2">Book your room today</div>
                 <div className="text-md font-light text-300 mb-4">
-                    We know time is precious so our goal is to help you <br />
+                    We know time is precious so our goal is to help you
                     create wonderful moments with your partner.
                 </div>
                 <button onClick={()=>setVdoPlay(prev=>!prev)}

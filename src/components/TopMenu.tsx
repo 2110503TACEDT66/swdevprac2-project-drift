@@ -27,7 +27,7 @@ export default async function TopMenu(){
             
             <TopMenuItem title={"Booking"} pageRef="/booking"/>
             <Link href={"/"}>
-                <Image src={"/img/logo.png"} width={800} height={800} alt="logo"
+                <Image src={"/img/logo.png"} width={512} height={512} alt="logo"
                     className=" size-16 p-1"
                 />
             </Link>
