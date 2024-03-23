@@ -29,7 +29,7 @@ export default async function Page({params}:{params:{hid:string}}){
                         </ul>
                    </div>
                 </div>
-                <Link href={`/booking?id=${params.hid}`} className="mx-auto w-fit h-fit">
+                <Link href={`/booking?id=${params.hid}&name=${hotel.data.name}`} className="mx-auto w-fit h-fit">
                     <button className=" bg-white font-medium text-xl rounded-md p-3 hover:scale-105 hover:bg-indigo-600 hover:text-slate-100 transition-all">
                         BOOK NOW
                     </button>

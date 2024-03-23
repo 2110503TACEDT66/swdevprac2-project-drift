@@ -19,6 +19,7 @@ export default function Home() {
   //set selected hotel if user come from hotelCatalog
   const urlParams = useSearchParams();
   const hid = urlParams.get('id');
+  const hotelName = urlParams.get('name')
 
   //controlled state of input field
   const [name, setName] = useState<string|null>(null);
@@ -94,7 +95,7 @@ export default function Home() {
               onChange={(e) => setCid(e.target.value)}
             />
 
-            <div className='self-start pl-1 font-light text-gray-500'>select hotel</div>
+            <div className='self-start pl-1 font-light text-gray-500'>select hotel : {hotelName}</div>
            <Select id="hospital" defaultValue={hid} variant='standard' className="w-[100%]" onChange={(e)=>setHospital(e.target.value as string)}>
               <MenuItem disabled>Select the hotel</MenuItem>
               {
