@@ -16,9 +16,11 @@ export default function DrawerPanel ({children}:{children:React.ReactNode}) {
 
   return (
     <>
-      <Button onClick={handleDrawerOpen}>
-        <MenuIcon className='text-gray-100'/>
-      </Button>
+      <div className='w-full flex flex-row'>
+        <Button onClick={handleDrawerOpen}>
+          <MenuIcon className='text-gray-100'/>
+        </Button>
+      </div>
       <Drawer anchor="left" open={open} onClose={handleDrawerClose} sx={{
         '& .MuiDrawer-paper': {
           backgroundColor: '#1c1c1c',
@@ -26,7 +28,7 @@ export default function DrawerPanel ({children}:{children:React.ReactNode}) {
         },
       }}
       >
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center py-2">
           {children}
         </div>
       </Drawer>
