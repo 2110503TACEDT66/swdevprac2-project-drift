@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image"
-import styles from "./banner.module.css"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
@@ -11,6 +10,7 @@ export default function Banner(){
 
     const router = useRouter()
     const {data:session} = useSession();
+    console.log(session?.user.name)
     const imgSrcs = [
                     "/img/cover1.jpg" , 
                     "/img/cover2.jpg", 
@@ -44,7 +44,7 @@ export default function Banner(){
             md:text-xl md:right-10 md:bottom-8
             lg:text-2xl lg:right-12 lg:bottom-10
             xl:text-3xl xl:right-12 xl:bottom-10 xl:p-5 xl:rounded-xl
-            2xl:text-5xl 2xl:right-15 2xl:bottom-12 2xl:p-7 2xl:rounded-2xl">
+            2xl:text-4xl 2xl:right-15 2xl:bottom-12 2xl:p-7 2xl:rounded-2xl">
                 Select Hotel
             </button>
         </div>

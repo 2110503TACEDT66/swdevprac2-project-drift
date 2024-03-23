@@ -1,61 +1,89 @@
-import DateResereve from "@/components/DateReserve";
-import getUserProfile from "@/libs/getUserProfile";
-import { Select, TextField , MenuItem} from "@mui/material";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+"use client"
+import DateReserve from '@/components/DateReserve';
+import { addBooking } from '@/redux/features/bookSlice';
+import { AppDispatch } from '@/redux/store';
+import { TextField, Select, MenuItem } from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-export default async function Page(){
-    
-    const session = await getServerSession(authOptions);
-    if(!session || !session.user.token) return null
-    const profile = await getUserProfile(session.user.token);
-    
-    
-    return(
-        <div className="h-full w-full flex mt-4 flex-col flex-nowrap">
+export default function Home() {
+  
+  const [name, setName] = useState<string|null>(null);
+  const [lastName, setLastName] = useState<string|null>(null);
+  const [cid, setCid] = useState<string|null>(null);
+  const [hospital, setHospital] = useState<string|null>(null);
+  const [bookDate, setBookDate] = useState<Dayjs|null>(null);
 
-                <div className="self-center p-4 relative bg-slate-100 rounded-md font-light text-lg shadow-md">
-                <table cellPadding={5}>
-                    <th colSpan={2} className="text-xl">User Profile</th>
-                    <tr className="">
-                        <td className="font-medium border-r-2 border-r-slate-400">Name</td>
-                        <td className="pl-2">{profile.data.name}</td>
-                    </tr>
-                    <tr className="">
-                        <td className="font-medium border-r-2 border-r-slate-400">Email</td>
-                        <td className="pl-2">{profile.data.email}</td>
-                    </tr>
-                    <tr className="">
-                        <td className="font-medium border-r-2 border-r-slate-400">Tel</td>
-                        <td className="pl-2">{profile.data.tel}</td>
-                    </tr>
-                    <tr className="">
-                        <td className="font-medium border-r-2 border-r-slate-400">Member Since</td>
-                        <td className="pl-2">{new Date(profile.data.createdAt).toString()}</td>
-                    </tr>
-                    
-                </table>
-                </div>
+  const dispatch = useDispatch<AppDispatch>()
 
-        <div className="mx-auto mt-5 flex flex-col w-fit h-fit text-center text-2xl font-bold bg-slate-100 rounded-lg pt-10 shadow-md">
-   
-            Vaccine Booking
-            <form action="" method="Post" className="flex flex-col p-10 gap-y-3">
-                <TextField variant="standard" name={"Name-Lastname"} label={"Name-Lastname"} className="h-12" required/>
-                <TextField variant="standard" name={"Citizen ID"} label={"Citizen ID"} className="h-12" required/>
+  const makeBooking = () => {
+    if (name && lastName && hospital && cid && bookDate) {
+      const item:BookingItem = {
+        name: name,
+        surname: lastName,
+        id: cid,
+        hospital: hospital,
+        bookDate: dayjs(bookDate).format("YYYY/MM/DD")
+      }
+      dispatch(addBooking(item))
+    }
+  }
+
+  return (
+    <main className="flex justify-center items-center h-screen">
+
+        <div className="w-full max-w-[40%] bg-gray-100 rounded-lg">
+        
+            <div className="text-2xl mt-3 font-bold text-center">New Booking</div>
+            <div
+                className="bg-slate-100 rounded-lg p-5 flex flex-col items-center space-y-6"
+            >
+
+            <TextField 
+              name='Name' 
+              label='Name' 
+              variant='standard' 
+              className="w-[100%]"
+              value={name || ''}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <TextField 
+              name='Lastname' 
+              label='Lastname' 
+              variant='standard' 
+              className="w-[100%]" 
+              value={lastName || ''}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            <TextField 
+              name='Citizen ID' 
+              label='Citizen ID' 
+              variant='standard' 
+              className="w-[100%]" 
+              value={cid || ''}
+              onChange={(e) => setCid(e.target.value)}
+            />
+              
+            <Select id='hospital' variant='standard' className="w-[100%]"
+            onChange={(e) => setHospital(e.target.value as string)}>
+            
+                <MenuItem value={"Chula"}>Chulalongkorn Hospital</MenuItem>
+                <MenuItem value={"Rajavithi"}>Rajavithi Hospital</MenuItem>
+                <MenuItem value={"Thammasat"}>Thammasat University Hospital</MenuItem>
                 
-                <div className="self-start text-[16px] text-gray-500 pl-1 mt-2 font-semibold">hospital</div>
-                <Select name="hospital" id={"hospital"} labelId="hospital-label" variant="standard" className=" w-full h-12 text-left" required>
-                    <MenuItem value={"Chula"}>Chulalongkorn Hospital</MenuItem>
-                    <MenuItem value={"Rajavithi"}>Rajavithi Hospital</MenuItem>
-                    <MenuItem value={"Thammasat"}>Thammasat University Hospital</MenuItem>
-                </Select>
-                <div className="self-start text-[16px] text-gray-500 pl-1 mt-2 font-semibold">reserve Date</div>
-                <DateResereve/>
-                <button type="submit" name="Book Vaccine" className="bg-white text-gray-700 mt-2 border-2 p-2 rounded-lg font-semibold hover:scale-105 hover:border-gray-700 hover:bg-blue-200  transition-all ease-in-out">Book Vaccine</button>
-            </form>        
-        </div>
+            </Select>
 
+            <DateReserve onDateChange={(value:Dayjs)=>{setBookDate(value)}}/>
+          
+            <button
+            name='Book Vaccine' 
+            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-[100%]'
+            onClick={makeBooking}>
+                Book Hotel
+            </button>
         </div>
-    )
+      </div>
+    </main>
+  )
 }
