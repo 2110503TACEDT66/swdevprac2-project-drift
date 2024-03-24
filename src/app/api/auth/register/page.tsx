@@ -60,46 +60,32 @@ export default function Register() {
       mt={4}
     >
       <Box
-        className="bg-slate-400 rounded-lg p-5 flex flex-col justify-center items-center"
-        sx={{ width: '50%', maxWidth: '500px' }}
+        className="bg-slate-200 rounded-lg p-5 flex flex-col justify-center items-center"
+        sx={{ minWidth:'400px', width: '50%', maxWidth: '500px' }}
       >
         <h1 className='text-3xl font-bold mb-2'>Register</h1>
-        <TextField
-          label="Name"
-          value={userName}
+
+        <TextField label="Name" value={userName} fullWidth margin="normal"
           onChange={(e) => setUserName(e.target.value)}
-          fullWidth
-          margin="normal"
         />
-        <TextField
-          label="Telephone"
-          value={userTel}
+        <TextField label="Telephone" value={userTel} fullWidth margin="normal"
           onChange={(e) => setUserTel(e.target.value)}
-          fullWidth
-          margin="normal"
         />
-        <TextField
-          label="Email"
-          type="email"
-          value={userEmail}
+        <TextField label="Email" type="email" value={userEmail} margin="normal" fullWidth
           onChange={(e) => setUserEmail(e.target.value)}
-          fullWidth
-          margin="normal"
         />
-        <TextField
-          label="Password"
-          type="password"
-          value={userPassword}
+        <TextField label="Password" type="password" value={userPassword} fullWidth margin="normal"
           onChange={(e) => setUserPassword(e.target.value)}
-          fullWidth
-          margin="normal"
         />
+
         {errorMessage && (
           <p className="text-red-500 mb-2">{errorMessage}</p> // Render error message if exists
         )}
-        <Button variant='contained' color='primary' onClick={handleRegister} className='w-full mt-4 bg-blue-500' disabled={!areAllFieldsFilled()}>
+
+        <Button variant='contained' color='primary' onClick={handleRegister} className='w-full mt-4 bg-blue-500 text-xl font-kanit' disabled={!areAllFieldsFilled()}>
             {loading ? <CircularProgress size={24} color="inherit" /> : 'Register'}
         </Button>
+
       </Box>
     </Box>
   );

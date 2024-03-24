@@ -3,32 +3,32 @@ import React, { useState } from 'react';
 import { Drawer, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
+import CloseIcon from '@mui/icons-material/Close';
+
 export default function DrawerPanel ({children}:{children:React.ReactNode}) {
+
   const [open, setOpen] = useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const toggleDrawerOpen = ()=> setOpen(!open)
 
   return (
     <>
-      <div className='w-full flex flex-row'>
-        <Button onClick={handleDrawerOpen}>
-          <MenuIcon className='text-gray-100'/>
+      <div className='w-fit mr-auto flex flex-row'>
+        <Button onClick={toggleDrawerOpen}>
+          <MenuIcon className='text-gray-100' fontSize='large'/>
         </Button>
       </div>
-      <Drawer anchor="left" open={open} onClose={handleDrawerClose} sx={{
+
+      <Drawer anchor="left" open={open} onClose={toggleDrawerOpen} sx={{
         '& .MuiDrawer-paper': {
-          backgroundColor: '#1c1c1c',
-          minWidth: '30%',
+          backgroundColor:"#101010",
+          width:'100%',
         },
       }}
       >
-        <div className="flex flex-col justify-center items-center py-2">
+        <div className="flex flex-col justify-center first:items-start items-center py-2 gap-y-5">
+          <Button onClick={toggleDrawerOpen}>
+            <CloseIcon className='text-gray-100 ml-5' fontSize='large' />
+          </Button>
           {children}
         </div>
       </Drawer>

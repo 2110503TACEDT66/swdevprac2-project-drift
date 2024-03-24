@@ -4,6 +4,11 @@ import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions:AuthOptions = {
+    // pages:{
+    //     signIn:'/auth/signin',
+    //     signOut: '/auth/signout',
+    //     error: '/auth/error', // Error code passed in query string as ?error=
+    // },
     providers:[
         CredentialsProvider({
             // The name to display on the sign in form (e.g. "Sign in with...")
@@ -20,21 +25,24 @@ export const authOptions:AuthOptions = {
             async authorize(credentials, req) {
   
                 if(!credentials) return null
+               
                 const userData = await userLogIn(credentials.email , credentials.password);
                 
-                if (!userData) return null
+                if (!userData){return null}
                 return userData
             }
           })
     ],
     session:{strategy:"jwt"},
     callbacks:{
-        async jwt({token,user}){
+        async jwt({token,user}){ 
             return {...token , ...user}
+
             // now token will contain {user , token}
         },
         async session({session,token,user}){
             //assign user to the data of token -> {user, token}
+            
             session.user = token as any
             return session
         }

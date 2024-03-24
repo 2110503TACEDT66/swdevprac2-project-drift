@@ -2,38 +2,71 @@
 import DateReserve from '@/components/DateReserve';
 import { addBooking } from '@/redux/features/bookSlice';
 import { AppDispatch } from '@/redux/store';
-import { TextField, Select, MenuItem } from '@mui/material';
+import { TextField, Select, MenuItem} from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
-import { useState } from 'react';
+import { getSession } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { BookingItem } from '../../../interface';
+import { HotelItem } from '../../../interface';
+
+
 
 export default function Home() {
-  
+
+  const user = getSession();
+  console.log(user);
+
+  //set selected hotel if user come from hotelCatalog
+  const urlParams = useSearchParams();
+  const hid = urlParams.get('id');
+  const hotelName = urlParams.get('name')
+
+  //controlled state of input field
   const [name, setName] = useState<string|null>(null);
   const [lastName, setLastName] = useState<string|null>(null);
   const [cid, setCid] = useState<string|null>(null);
-  const [hospital, setHospital] = useState<string|null>(null);
+  const [hotel, setHotel] = useState<string|null>(null);
   const [bookDate, setBookDate] = useState<Dayjs|null>(null);
 
-  const dispatch = useDispatch<AppDispatch>()
 
+  //keep booking in the store
+  const dispatch = useDispatch<AppDispatch>()
   const makeBooking = () => {
-    if (name && lastName && hospital && cid && bookDate) {
+    if (name && lastName && hotel && cid && bookDate) {
       const item:BookingItem = {
         name: name,
         surname: lastName,
         id: cid,
-        hospital: hospital,
-        bookDate: dayjs(bookDate).format("YYYY/MM/DD")
+        hotel: hotel,
+        bookDate: dayjs(bookDate).format("YYYY/MM/DD"),
       }
       dispatch(addBooking(item))
     }
   }
 
-  return (
-    <main className="flex justify-center items-center h-screen">
 
-        <div className="w-full max-w-[40%] bg-gray-100 rounded-lg">
+  //fetch hotels list to use in <Select>
+  const[isLoading, setLoading] = useState(true);
+  const[hotelData, setHotelData] = useState<HotelItem[]>([]);
+  useEffect(()=>{
+    fetch("https://swd-hotel-backend.vercel.app/api/v1/hotels")
+      .then(res => res.json())
+      .then(data => {
+        setHotelData(data.data);
+        setLoading(false);
+      });
+  },[])
+  if(isLoading) return <p className='text-slate-100 mx-auto w-fit h-fit font-light text-4xl'>Loading...</p>
+  if(hotelData.length==0) setHotelData([])
+
+
+
+  return (
+    <main className="flex justify-center items-center h-fit mt-10">
+
+        <div className="w-[90%] sm:w-[600px] bg-gray-100 rounded-lg">
         
             <div className="text-2xl mt-3 font-bold text-center">New Booking</div>
             <div
@@ -64,21 +97,24 @@ export default function Home() {
               value={cid || ''}
               onChange={(e) => setCid(e.target.value)}
             />
-              
-            <Select id='hospital' variant='standard' className="w-[100%]"
-            onChange={(e) => setHospital(e.target.value as string)}>
-            
-                <MenuItem value={"Chula"}>Chulalongkorn Hospital</MenuItem>
-                <MenuItem value={"Rajavithi"}>Rajavithi Hospital</MenuItem>
-                <MenuItem value={"Thammasat"}>Thammasat University Hospital</MenuItem>
-                
-            </Select>
 
-            <DateReserve onDateChange={(value:Dayjs)=>{setBookDate(value)}}/>
+            <div className='self-start pl-1 font-light text-gray-500'>Select hotel :</div>
+           <Select id="hospital" defaultValue={hid} variant='standard' className="w-[100%]" onChange={(e)=>setHotel(e.target.value as string)}>
+              <MenuItem disabled>Select the hotel</MenuItem>
+              {
+                  hotelData.map((elem,_)=>(
+                      <MenuItem key={elem.id } value={elem.name}>
+                          {elem.name}
+                      </MenuItem>
+                  ))
+              }
+            </Select>
           
+            <DateReserve onDateChange={(value:Dayjs)=>{setBookDate(value)}}/>
+            
             <button
             name='Book Vaccine' 
-            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-[100%]'
+            className='max-w-[500px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-[100%] transition-all'
             onClick={makeBooking}>
                 Book Hotel
             </button>
