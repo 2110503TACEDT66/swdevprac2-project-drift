@@ -13,10 +13,6 @@ import { useSelector, TypedUseSelectorHook } from "react-redux";
 // const rootReducer = combineReducers({bookSlice})
 // const reduxPersistedReducer = persistReducer(persistConfig, rootReducer)
 
-// export const store = configureStore({
-//     reducer: reduxPersistedReducer,
-//     middleware:[]
-// })
 
 export const store = configureStore({
     reducer: bookSlice,

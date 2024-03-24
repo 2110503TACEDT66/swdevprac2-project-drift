@@ -2,7 +2,7 @@
 import DateReserve from '@/components/DateReserve';
 import { addBooking } from '@/redux/features/bookSlice';
 import { AppDispatch } from '@/redux/store';
-import { TextField, Select, MenuItem} from '@mui/material';
+import { TextField, Select, MenuItem, Autocomplete} from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { getSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
@@ -47,14 +47,13 @@ export default function Home() {
     }
   }
 
-
   //fetch hotels list to use in <Select>
   const[isLoading, setLoading] = useState(true);
   const[hotelData, setHotelData] = useState<HotelItem[]>([]);
   useEffect(()=>{
     fetch("https://swd-hotel-backend.vercel.app/api/v1/hotels")
       .then(res => res.json())
-      .then(data => {
+      .then(data =>{
         setHotelData(data.data);
         setLoading(false);
       });
@@ -106,6 +105,14 @@ export default function Home() {
                     ))
                 }
               </Select>
+
+              {/* <Autocomplete
+                id="combo-box-demo"
+                options={hotelData}
+                sx={{ width: 300 }}
+                onChange={(e,value:string)=>setHotel(value)}
+                renderInput={(params) => <TextField {...params} label="Hospital" />}
+              /> */}
               
               <DateReserve onDateChange={(value:Dayjs)=>{setBookDate(value)}}/>
               
