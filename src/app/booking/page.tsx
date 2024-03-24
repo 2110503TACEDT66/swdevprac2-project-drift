@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { BookingItem } from '../../../interface';
 import { HotelItem } from '../../../interface';
+import Loading from './loading';
 
 
 
@@ -58,7 +59,7 @@ export default function Home() {
         setLoading(false);
       });
   },[])
-  if(isLoading) return <p className='text-slate-100 mx-auto w-fit h-fit font-light text-4xl'>Loading...</p>
+  if(isLoading) return <Loading/>
   if(hotelData.length==0) setHotelData([])
 
 
@@ -66,59 +67,55 @@ export default function Home() {
   return (
     <main className="flex justify-center items-center h-fit mt-10">
 
-        <div className="w-[90%] sm:w-[600px] bg-gray-100 rounded-lg">
+        <div className="w-[90%] max-w-[600px] bg-gray-100 rounded-lg">
         
             <div className="text-2xl mt-3 font-bold text-center">New Booking</div>
-            <div
-                className="bg-slate-100 rounded-lg p-5 flex flex-col items-center space-y-6"
-            >
+            <div className="bg-slate-100 rounded-lg p-5 flex flex-col items-center space-y-6">
+              <TextField 
+                name='Name' 
+                label='Name' 
+                variant='standard' 
+                className="w-[100%]"
+                value={name || ''}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <TextField 
+                name='Lastname' 
+                label='Lastname' 
+                variant='standard' 
+                className="w-[100%]" 
+                value={lastName || ''}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <TextField 
+                name='Citizen ID' 
+                label='Citizen ID' 
+                variant='standard' 
+                className="w-[100%]" 
+                value={cid || ''}
+                onChange={(e) => setCid(e.target.value)}
+              />
 
-            <TextField 
-              name='Name' 
-              label='Name' 
-              variant='standard' 
-              className="w-[100%]"
-              value={name || ''}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <TextField 
-              name='Lastname' 
-              label='Lastname' 
-              variant='standard' 
-              className="w-[100%]" 
-              value={lastName || ''}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-            <TextField 
-              name='Citizen ID' 
-              label='Citizen ID' 
-              variant='standard' 
-              className="w-[100%]" 
-              value={cid || ''}
-              onChange={(e) => setCid(e.target.value)}
-            />
-
-            <div className='self-start pl-1 font-light text-gray-500'>Select hotel :</div>
-           <Select id="hospital" defaultValue={hid} variant='standard' className="w-[100%]" onChange={(e)=>setHotel(e.target.value as string)}>
-              <MenuItem disabled>Select the hotel</MenuItem>
-              {
-                  hotelData.map((elem,_)=>(
-                      <MenuItem key={elem.id } value={elem.name}>
-                          {elem.name}
-                      </MenuItem>
-                  ))
-              }
-            </Select>
-          
-            <DateReserve onDateChange={(value:Dayjs)=>{setBookDate(value)}}/>
-            
-            <button
-            name='Book Vaccine' 
-            className='max-w-[500px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-[100%] transition-all'
-            onClick={makeBooking}>
-                Book Hotel
-            </button>
-        </div>
+              <div className='self-start pl-1 font-light text-gray-500'>Select hotel</div>
+              <Select id="hospital" defaultValue={hid} variant='standard' className="w-[100%]" onChange={(e)=>setHotel(e.target.value as string)}>
+                {
+                    hotelData.map((elem,_)=>(
+                        <MenuItem key={elem.id } value={elem.id}>
+                            {elem.name}
+                        </MenuItem>
+                    ))
+                }
+              </Select>
+              
+              <DateReserve onDateChange={(value:Dayjs)=>{setBookDate(value)}}/>
+              
+              <button
+              name='Book Vaccine' 
+              className='max-w-[500px] bg-blue-500 hover:bg-blue-700 text-xl text-white font-bold py-2 px-4 rounded w-[100%] transition-all'
+              onClick={makeBooking}>
+                  Book Hotel
+              </button>
+            </div>
       </div>
     </main>
   )
