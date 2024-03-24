@@ -3,6 +3,9 @@ const nextConfig = {
     images: {
         domains: ['drive.google.com','picsum.photos']
     },
+    experimental: {
+        serverActions: true
+    },
     async headers() {
         return [
             {

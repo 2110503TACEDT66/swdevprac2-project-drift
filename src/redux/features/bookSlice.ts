@@ -24,7 +24,7 @@ export const bookSlice = createSlice({
         },
         removeBooking: (state, action:PayloadAction<BookingItem>) => {
             const remainItems = state.bookItems.filter(obj => {
-                return obj.id !== action.payload
+                return obj.id !== action.payload.id
             })
 
             state.bookItems = remainItems;
