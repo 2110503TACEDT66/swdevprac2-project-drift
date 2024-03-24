@@ -4,8 +4,8 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import { Link, Hidden } from "@mui/material"
 import DrawerPanel from "./DrawerPanel"
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Login, Logout } from '@mui/icons-material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 
