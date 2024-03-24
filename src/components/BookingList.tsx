@@ -10,6 +10,7 @@ export default function BookingList() {
 
     return (
         <>
+        <div className="text-slate-100 text-xl mt-5 px-5 md:text-2xl">You have XXX bookings</div>
         {
             bookItems.length > 0
             ?   bookItems.map((bookingItem)=>(
