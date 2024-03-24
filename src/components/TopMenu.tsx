@@ -9,6 +9,7 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Login, Logout } from '@mui/icons-material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import QueueIcon from '@mui/icons-material/Queue';
+import BedIcon from '@mui/icons-material/Bed';
 
 export default async function TopMenu(){
 
@@ -34,6 +35,15 @@ export default async function TopMenu(){
                                         <div className="text-gray-100"> <AssignmentIndIcon fontSize="medium" /> &nbsp;Register</div>
                                     </Link>
                                 </div>
+                    }
+
+{
+                    session && session.user.role === "admin"
+                        ?   <Link href={"/booking/manage"} className="w-full h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
+                            text-3xl hover:bg-slate-800 " underline="none">
+                                <div className="text-gray-100"> <BedIcon fontSize="medium"/> &nbsp;Manage</div>
+                            </Link>
+                        :   null
                     }
 
                     <Link href="/mybooking" underline="none" className="w-full text-center p-2 pl-3 pr-3 text-3xl hover:bg-slate-800 text-gray-100">
