@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Drawer, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function DrawerPanel ({children}:{children:React.ReactNode}) {
@@ -11,7 +12,6 @@ export default function DrawerPanel ({children}:{children:React.ReactNode}) {
 
   return (
     <>
-
       <div className='w-fit mr-auto flex flex-row'>
         <Button onClick={toggleDrawerOpen}>
           <MenuIcon className='text-gray-100' fontSize='large'/>
@@ -21,7 +21,7 @@ export default function DrawerPanel ({children}:{children:React.ReactNode}) {
       <Drawer anchor="left" open={open} onClose={toggleDrawerOpen} sx={{
         '& .MuiDrawer-paper': {
           backgroundColor:"#101010",
-          width:'100%',
+          width:'80%',
         },
       }}
       >
