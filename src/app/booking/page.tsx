@@ -8,6 +8,8 @@ import { getSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { BookingItem } from '../../../interface';
+import { HotelItem } from '../../../interface';
 
 
 
@@ -25,19 +27,20 @@ export default function Home() {
   const [name, setName] = useState<string|null>(null);
   const [lastName, setLastName] = useState<string|null>(null);
   const [cid, setCid] = useState<string|null>(null);
-  const [hospital, setHospital] = useState<string|null>(null);
+  const [hotel, setHotel] = useState<string|null>(null);
   const [bookDate, setBookDate] = useState<Dayjs|null>(null);
+
 
   //keep booking in the store
   const dispatch = useDispatch<AppDispatch>()
   const makeBooking = () => {
-    if (name && lastName && hospital && cid && bookDate) {
+    if (name && lastName && hotel && cid && bookDate) {
       const item:BookingItem = {
         name: name,
         surname: lastName,
         id: cid,
-        hospital: hospital,
-        bookDate: dayjs(bookDate).format("YYYY/MM/DD")
+        hotel: hotel,
+        bookDate: dayjs(bookDate).format("YYYY/MM/DD"),
       }
       dispatch(addBooking(item))
     }
@@ -96,11 +99,11 @@ export default function Home() {
             />
 
             <div className='self-start pl-1 font-light text-gray-500'>Select hotel :</div>
-           <Select id="hospital" defaultValue={hid} variant='standard' className="w-[100%]" onChange={(e)=>setHospital(e.target.value as string)}>
+           <Select id="hospital" defaultValue={hid} variant='standard' className="w-[100%]" onChange={(e)=>setHotel(e.target.value as string)}>
               <MenuItem disabled>Select the hotel</MenuItem>
               {
                   hotelData.map((elem,_)=>(
-                      <MenuItem key={elem.id } value={elem.id}>
+                      <MenuItem key={elem.id } value={elem.name}>
                           {elem.name}
                       </MenuItem>
                   ))

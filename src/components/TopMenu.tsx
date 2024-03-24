@@ -14,7 +14,7 @@ export default async function TopMenu(){
     const session = await getServerSession(authOptions)
 
     return(
-        <div className=" flex flex-row flex-nowrap h-16 w-full justify-end bg-gray-950 text-gray-100 gap-x-4 pl-4 pr-4 border-b-[3px] border-b-gray-600">
+        <div className=" flex flex-row flex-nowrap justify-end h-16 w-full bg-gray-950 text-gray-100 gap-x-4 pl-4 pr-4 border-b-[3px] border-b-gray-600">
             <Hidden smUp>
                 <DrawerPanel>
                     {
@@ -59,7 +59,8 @@ export default async function TopMenu(){
                                 </Link>
                             </div>
                 }
-                
+
+                <div className="flex justify-end mb-auto mt-auto"><TopMenuItem title={"My Booking"} pageRef="/mybooking"/></div>
                 <TopMenuItem title={"Booking"} pageRef="/booking"/>
             </Hidden>
             
@@ -68,6 +69,6 @@ export default async function TopMenu(){
                     className=" size-16 p-1"
                 />
             </Link>
-        </div>
+        </div> 
     )
 }

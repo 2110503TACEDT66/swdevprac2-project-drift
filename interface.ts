@@ -1,11 +1,11 @@
-  interface HotelJson{
+  export interface HotelJson{
     success: boolean,
     count: number,
     pagination: Object,
     data: HotelItem[]
   }
 
-  interface HotelItem {
+  export interface HotelItem {
     _id: string,
     name: string,
     address: string,
@@ -17,10 +17,10 @@
     id: string
   }
   
-  interface BookingItem {
+export interface BookingItem {
     name: string;
     surname: string;
     id: string;
-    hospital: string;
+    hotel: string;
     bookDate: string;
   }
