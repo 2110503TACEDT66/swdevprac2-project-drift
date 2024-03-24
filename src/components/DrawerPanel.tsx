@@ -21,7 +21,7 @@ export default function DrawerPanel ({children}:{children:React.ReactNode}) {
       <Drawer anchor="left" open={open} onClose={toggleDrawerOpen} sx={{
         '& .MuiDrawer-paper': {
           backgroundColor:"#101010",
-          width:'100%',
+          width:'80%',
         },
       }}
       >

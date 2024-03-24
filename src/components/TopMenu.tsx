@@ -21,22 +21,22 @@ export default async function TopMenu(){
                         session
                             ?   <Link href={"/api/auth/signout"} className="w-full h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
                                     text-3xl hover:bg-slate-700 " underline="none">
-                                    <div> <Logout fontSize="medium"/> Sign-Out</div>
+                                    <div> <Logout fontSize="medium"/> &nbsp;Sign-Out</div>
                                 </Link>
-                            :   <div className="flex flex-col justify-center items-center w-full h-full">
+                            :   <div className="flex flex-col justify-center items-center w-full h-full gap-y-5">
                                     <Link href={"/api/auth/signin"} className="w-full h-fit p-1 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
                                     text-3xl hover:bg-slate-700 " underline="none">
-                                        <div> <Login fontSize="medium"/> Sign-In</div>
+                                        <div> <Login fontSize="medium"/> &nbsp;Sign-In</div>
                                     </Link>
                                     <Link href={"/api/auth/register"} className="w-full h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
                                     text-3xl hover:bg-slate-700 " underline="none">
-                                        <div> <AssignmentIndIcon fontSize="medium" /> Register</div>
+                                        <div> <AssignmentIndIcon fontSize="medium" /> &nbsp;Register</div>
                                     </Link>
                                 </div>
                     }
                     
                     <Link href="/booking" className="w-full text-center p-2 pl-3 pr-3 text-3xl no-underline hover:bg-slate-700 text-gray-100">
-                        <AutoStoriesIcon fontSize="medium" /> &nbsp;&nbsp;Booking
+                        <AutoStoriesIcon fontSize="medium" className="no-underline" /> &nbsp;&nbsp;Booking
                     </Link>
                 </DrawerPanel>
             </Hidden>
@@ -44,18 +44,18 @@ export default async function TopMenu(){
             <Hidden smDown>
                 {
                     session
-                        ?   <Link href={"/api/auth/signout"} className="w-fit h-fi p-2 pl-3 pr-3 mt-auto mb-auto text-gray-100
-                            text-2xl font-bold hover:bg-slate-700 hover:rounded-2xl " underline="none">
-                                <div>Sign-Out</div>
+                        ?   <Link href={"/api/auth/signout"} className="w-fit h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-gray-100
+                            hover:bg-slate-700 hover:rounded-2xl" underline="none">
+                                <div className="text-sm sm:text-lg md:text-xl 2xl:text-2xl">Sign-Out</div>
                             </Link>
                         :   <div className="flex flex-row justify-center items-center w-fit h-full">
                                 <Link href={"/api/auth/signin"} className="w-fit h-fit p-1 pl-3 pr-3 mt-auto mb-auto text-gray-100
-                                text-2xl font-bold hover:bg-slate-700 hover:rounded-2xl " underline="none">
-                                    <div>Sign-In</div>
+                                hover:bg-slate-700 hover:rounded-2xl" underline="none">
+                                    <div className="text-sm sm:text-lg md:text-xl 2xl:text-2xl">Sign-In</div>
                                 </Link>
                                 <Link href={"/api/auth/register"} className="w-fit h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-gray-100
-                                text-2xl font-bold hover:bg-slate-700 hover:rounded-2xl " underline="none">
-                                    <div>Register</div>
+                                hover:bg-slate-700 hover:rounded-2xl" underline="none">
+                                    <div className="text-sm sm:text-lg md:text-xl 2xl:text-2xl">Register</div>
                                 </Link>
                             </div>
                 }
