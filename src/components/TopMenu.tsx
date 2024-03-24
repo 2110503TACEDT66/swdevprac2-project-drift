@@ -8,6 +8,7 @@ import DrawerPanel from "./DrawerPanel"
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Login, Logout } from '@mui/icons-material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import QueueIcon from '@mui/icons-material/Queue';
 
 export default async function TopMenu(){
 
@@ -20,43 +21,39 @@ export default async function TopMenu(){
                     {
                         session
                             ?   <Link href={"/api/auth/signout"} className="w-full h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
-                                    text-3xl hover:bg-slate-700 " underline="none">
-                                    <div> <Logout fontSize="medium"/> &nbsp;Sign-Out</div>
+                                    text-3xl hover:bg-slate-800 " underline="none">
+                                    <div className="text-gray-100"> <Logout fontSize="medium"/> &nbsp;Sign-Out</div>
                                 </Link>
                             :   <div className="flex flex-col justify-center items-center w-full h-full gap-y-5">
-                                    <Link href={"/api/auth/signin"} className="w-full h-fit p-1 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
-                                    text-3xl hover:bg-slate-700 " underline="none">
-                                        <div> <Login fontSize="medium"/> &nbsp;Sign-In</div>
+                                    <Link href={"/api/auth/signin"} className="w-full h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
+                                    text-3xl hover:bg-slate-800 " underline="none">
+                                        <div className="text-gray-100"> <Login fontSize="medium" /> &nbsp;Sign-In</div>
                                     </Link>
                                     <Link href={"/api/auth/register"} className="w-full h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
-                                    text-3xl hover:bg-slate-700 " underline="none">
-                                        <div> <AssignmentIndIcon fontSize="medium" /> &nbsp;Register</div>
+                                    text-3xl hover:bg-slate-800 " underline="none">
+                                        <div className="text-gray-100"> <AssignmentIndIcon fontSize="medium" /> &nbsp;Register</div>
                                     </Link>
                                 </div>
                     }
-                    
-                    <Link href="/booking" className="w-full text-center p-2 pl-3 pr-3 text-3xl no-underline hover:bg-slate-700 text-gray-100">
-                        <AutoStoriesIcon fontSize="medium" className="no-underline" /> &nbsp;&nbsp;Booking
+
+                    <Link href="/mybooking" underline="none" className="w-full text-center p-2 pl-3 pr-3 text-3xl hover:bg-slate-800 text-gray-100">
+                        <div className="text-gray-100"> <AutoStoriesIcon fontSize="medium" /> &nbsp;&nbsp;My Booking</div>
                     </Link>
+
+                    <Link href="/booking" underline="none" className="w-full text-center p-2 pl-3 pr-3 text-3xl hover:bg-slate-800 text-gray-100">
+                        <div className="text-gray-100"> <QueueIcon fontSize="medium" /> &nbsp;&nbsp;Booking</div>
+                    </Link>
+
                 </DrawerPanel>
             </Hidden>
 
             <Hidden smDown>
                 {
                     session
-                        ?   <Link href={"/api/auth/signout"} className="w-fit h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-gray-100
-                            hover:bg-slate-700 hover:rounded-2xl" underline="none">
-                                <div className="text-sm sm:text-lg md:text-xl 2xl:text-2xl">Sign-Out</div>
-                            </Link>
-                        :   <div className="flex flex-row justify-center items-center w-fit h-full">
-                                <Link href={"/api/auth/signin"} className="w-fit h-fit p-1 pl-3 pr-3 mt-auto mb-auto text-gray-100
-                                hover:bg-slate-700 hover:rounded-2xl" underline="none">
-                                    <div className="text-sm sm:text-lg md:text-xl 2xl:text-2xl">Sign-In</div>
-                                </Link>
-                                <Link href={"/api/auth/register"} className="w-fit h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-gray-100
-                                hover:bg-slate-700 hover:rounded-2xl" underline="none">
-                                    <div className="text-sm sm:text-lg md:text-xl 2xl:text-2xl">Register</div>
-                                </Link>
+                        ?   <div className="flex justify-end mb-auto mt-auto"><TopMenuItem title={"Sign-Out"} pageRef="/api/auth/signout"/></div>
+                        :   <div className="flex justify-end mb-auto mt-auto">
+                                <TopMenuItem title={"Sign-In"} pageRef="/api/auth/signin"/>
+                                <TopMenuItem title={"Register"} pageRef="/api/auth/register"/>
                             </div>
                 }
 

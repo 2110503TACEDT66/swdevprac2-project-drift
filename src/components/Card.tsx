@@ -1,6 +1,7 @@
 import Image from "next/image"
 import InteractiveCard from "./InteractiveCard"
 import Rating from "./Rating"
+import { HotelItem } from "../../interface"
 
 export default function Card(
     {data}:{data:HotelItem}

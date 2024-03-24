@@ -10,6 +10,7 @@ export default function BookingList() {
 
     return (
         <>
+        <div className="text-slate-100 text-xl mt-5 px-5 md:text-2xl">You have XXX bookings</div>
         {
             bookItems.map((bookingItem)=>(
                 <div className="bg-slate-200 rounded px-5 mx-5 py-2 my-2"

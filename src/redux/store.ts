@@ -4,9 +4,11 @@ import { useSelector, TypedUseSelectorHook } from "react-redux";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
+
 const persistConfig = {
      key: "rootPersist",
-     storage
+     storage,
+    
 }
 
 
@@ -14,7 +16,8 @@ const rootReducer = combineReducers({bookSlice})
 const reduxPersistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
-    reducer: reduxPersistedReducer
+    reducer: reduxPersistedReducer,
+    middleware:[]
 })
 
 export type RootState = ReturnType<typeof store.getState>
