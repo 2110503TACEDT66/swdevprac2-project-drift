@@ -10,7 +10,7 @@ export default function Banner(){
 
     const router = useRouter()
     const {data:session} = useSession();
-    console.log(session?.user.name)
+    // console.log(session?.user.role)
     const imgSrcs = [
                     "/img/cover1.jpg" , 
                     "/img/cover2.jpg", 
