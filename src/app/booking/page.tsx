@@ -85,7 +85,7 @@ export default function Home() {
               :''
         }
 
-        {
+        
           <div className='absolute top-0 left-0 z-[9999] hidden items-center w-full h-full bg-black/30' ref={popupBox}>
             <div className="relative flex flex-col gap-y-3 mx-auto p-2 justify-center text-center
                             rounded-lg text-green-500 text-2xl bg-slate-50 
@@ -99,7 +99,7 @@ export default function Home() {
             </div>
           
           </div>
-        }
+        
 
             <div className="bg-slate-100 rounded-lg p-5 flex flex-col items-center space-y-6">
 
