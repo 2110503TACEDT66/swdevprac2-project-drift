@@ -1,22 +1,26 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import bookSlice from "./features/bookSlice";
 import { useSelector, TypedUseSelectorHook } from "react-redux";
-// import { persistReducer } from "redux-persist";
-// import storage from "redux-persist/lib/storage";
-
-// const persistConfig = {
-//      key: "rootPersist",
-//      storage
-// }
+import { persistReducer } from "redux-persist";
+//import storage from "redux-persist/lib/storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-// const rootReducer = combineReducers({bookSlice})
-// const reduxPersistedReducer = persistReducer(persistConfig, rootReducer)
+
+const persistConfig = {
+     timeout: 2000,
+     key: "rootPersist",
+     storage: AsyncStorage,
+}
+
+
+const rootReducer = combineReducers({bookSlice})
+const reduxPersistedReducer = persistReducer(persistConfig, rootReducer)
 
 
 export const store = configureStore({
-    reducer: bookSlice,
-    middleware:[]
+    reducer: reduxPersistedReducer
+    // middleware:[]
 })
 
 export type RootState = ReturnType<typeof store.getState>
