@@ -1,4 +1,4 @@
-import getHotel from "@/libs/getHotel";
+import getHotel from "@/libs/hotel/getHotel";
 import Image from "next/image";
 import Link from "next/link";
 

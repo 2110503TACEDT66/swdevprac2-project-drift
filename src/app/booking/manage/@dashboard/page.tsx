@@ -5,7 +5,7 @@ import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
 import dayjs from 'dayjs';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import createHotel from "@/libs/createHotel"
+import createHotel from "@/libs/hotel/createHotel"
 import { HotelItem } from "../../../../../interface"
 
 export default async function DashboardPage() {
