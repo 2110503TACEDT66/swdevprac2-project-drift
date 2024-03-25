@@ -1,7 +1,5 @@
 "use client"
 import Image from "next/image"
-import InteractiveCard from "./InteractiveCard"
-import Rating from "./Rating"
 import Link from "next/link";
 import { HotelItem } from "../../interface"
 import { Button } from "@mui/material"
@@ -15,10 +13,15 @@ export default function Card(
     ){
 
         const [showConfirmation, setShowConfirmation] = useState(false);
-
         const handleDelete = (hotelId: string) => {
-            if (session)
-                deleteHotel(hotelId, session.user.token)
+            if (session){
+                try {
+                    deleteHotel(hotelId, session.user.token)
+                    setTimeout(() => window.location.reload(), 1000);
+                } catch (error) {
+                    console.error(error)
+                }
+            }
         }
 
         const confirmDelete = () => {
@@ -31,7 +34,9 @@ export default function Card(
         }
 
     return(
-        <InteractiveCard hid={data.id}>
+        <div className="flex flex-col box-border flex-nowrap bg-gray-800 w-[320px] h-[450px] gap-x-[15px] rounded-lg shadow-lg border-[1px] border-gray-700
+            hover:border-gray-300
+            transition-all">
             <Image src={"https://picsum.photos/350/250"} className="rounded-t-lg" width={"350"} height={"250"} alt={""}/>
             <h2 className="text-2xl text-gray-50 flex font-normal w-full min-h-[45px] h-fit mb-2 bg-gray-900 text-center justify-center items-center leading-tight">
                 {data.name}
@@ -45,30 +50,20 @@ export default function Card(
             <div className="w-full flex justify-end mt-auto p-3 gap-x-2" onClick={(e) => e.preventDefault()}>
                 {
                     session?.user.role === "admin"
-                    ?   
-                        <div className="gap-x-2 flex">
-                            <Button variant="contained" className="bg-red-500" onClick={() => {setShowConfirmation(true)}}>
-                                Delete
-                            </Button>
-                            {
-                                showConfirmation && (
-                                    <ConfirmationPopup msg="Are you sure you want to delete this hotel?" confirm={confirmDelete} cancel={cancelDelete}/>
-                                )
-                            }
-                        </div>
-                    : null
+                        ?   
+                            <div>
+                                <Button variant="contained" color="error" className="bg-red-600 hover:bg-red-700" onClick={() => {setShowConfirmation(true)}}>
+                                    Delete
+                                </Button>
+                                {
+                                    showConfirmation && (
+                                        <ConfirmationPopup msg="Are you sure you want to delete this hotel?" confirm={confirmDelete} cancel={cancelDelete}/>
+                                    )
+                                }
+                            </div>
+                        : ''
                 }
-
-                {
-                    session
-                    ?   <Link href={`/booking?id=${data.id}&name=${data.name}`}>
-                            <Button variant="contained" className="bg-blue-500">
-                                Book Now
-                            </Button>
-                        </Link>
-                    : null
-                }
-                </div>
-        </InteractiveCard>
+            </div>
+        </div>
     )
 }

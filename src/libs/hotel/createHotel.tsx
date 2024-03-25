@@ -3,6 +3,7 @@ import { HotelItem } from "../../../interface"
 export default async function createHotel(hotel:HotelItem, token:string) {
     const response = await fetch("https://swd-hotel-backend.vercel.app/api/v1/hotels",{
         method:"POST",
+        mode:"cors",
         headers: {
             "Content-Type":"application/json",
             authorization:`Bearer ${token}`,

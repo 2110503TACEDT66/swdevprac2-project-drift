@@ -3,7 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Page({params}:{params:{hid:string}}){
-    const hotel = await getHotel(params.hid);
+
+    var hotel;
+    try{
+        hotel = await getHotel(params.hid);
+    }catch(error){
+        hotel = null    
+    }
 
     return(
         hotel
@@ -30,8 +36,8 @@ export default async function Page({params}:{params:{hid:string}}){
                 </Link>
             </div>
             :   
-            <div>
-                hotel Data {params.hid} not found
+            <div className="mt-5 text-slate-100 text-xl text-center">
+                hotel id {params.hid} not found
             </div>
     )
 }

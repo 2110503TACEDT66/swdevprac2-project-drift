@@ -3,6 +3,7 @@ import getBookings from "@/libs/booking/getBookings"
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { populatedBookingItem } from "../../../interface";
+import { revalidateTag } from "next/cache";
 
 export default async function myBookingPage() {
 
@@ -13,6 +14,7 @@ export default async function myBookingPage() {
         const myBooking = await getBookings(session!.user.token);
         myBookingData=myBooking.data;
     }
+    revalidateTag('bookingData');
 
     return (
         <main>
