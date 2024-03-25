@@ -7,6 +7,7 @@ import { Suspense } from "react";
 export default function Page(){
 
     const hotels = getHotels();
+    
 
     return(
         <Suspense fallback={<LinearProgress/>}>

@@ -13,10 +13,16 @@
     id: string
   }
   
-export interface BookingItem {
-    name: string;
-    surname: string;
-    id: string;
+  export interface BookingItem {
+    _id:string
+    user: string;
     hotel: string;
     bookDate: string;
+  }
+
+  export interface populatedBookingItem{
+    _id:string
+    user: string;
+    bookDate: string;
+    hotel:HotelItem
   }

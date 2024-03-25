@@ -1,51 +1,58 @@
 "use client"
 import DateReserve from '@/components/DateReserve';
-import { addBooking } from '@/redux/features/bookSlice';
-import { AppDispatch } from '@/redux/store';
-import { TextField, Select, MenuItem, Autocomplete} from '@mui/material';
+import { TextField, Select, MenuItem, Autocomplete, CircularProgress} from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
-import { getSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useRef, useState } from 'react';
 import { BookingItem } from '../../../interface';
 import { HotelItem } from '../../../interface';
 import Loading from './loading';
+import createBooking from '@/libs/createBooking';
 
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 export default function Home() {
 
-  const user = getSession();
-  console.log(user);
+  const {data:session,status} = useSession();
 
   //set selected hotel if user come from hotelCatalog
   const urlParams = useSearchParams();
   const hid = urlParams.get('id');
-  const hotelName = urlParams.get('name')
 
   //controlled state of input field
-  const [name, setName] = useState<string|null>(null);
-  const [lastName, setLastName] = useState<string|null>(null);
-  const [cid, setCid] = useState<string|null>(null);
-  const [hotel, setHotel] = useState<string|null>(null);
+  const [hotel, setHotel] = useState<string|null>(hid);
   const [bookDate, setBookDate] = useState<Dayjs|null>(null);
 
 
-  //keep booking in the store
-  const dispatch = useDispatch<AppDispatch>()
-  const makeBooking = () => {
-    if (name && lastName && hotel && cid && bookDate) {
-      const item:BookingItem = {
-        name: name,
-        surname: lastName,
-        id: cid,
-        hotel: hotel,
-        bookDate: dayjs(bookDate).format("YYYY/MM/DD"),
+  const[isCreating, setIsCreating] = useState(false);
+  const errorBox = useRef<HTMLDivElement>(null);
+  const popupBox = useRef<HTMLDivElement>(null);
+
+  const makeBooking = async () => {
+    
+    errorBox.current!.innerText = "";
+
+    if ( hotel && session!.user._id && bookDate) {
+      
+      setIsCreating(true);
+
+      try {
+         await createBooking(hotel , dayjs(bookDate).format("YYYY/MM/DD") , session!.user.token);
+         popupBox.current!.style.display = "flex";
+      } 
+      catch (error) {
+        errorBox.current!.innerText = "Cannot create a booking. Please try again.";
       }
-      dispatch(addBooking(item))
+      
+      setIsCreating(false);
     }
+    else errorBox.current!.innerText = "field cannot empty"
   }
+
+
 
   //fetch hotels list to use in <Select>
   const[isLoading, setLoading] = useState(true);
@@ -66,35 +73,37 @@ export default function Home() {
   return (
     <main className="flex justify-center items-center h-fit mt-10">
 
-        <div className="w-[90%] max-w-[600px] bg-gray-100 rounded-lg">
+        <div className="relative w-[90%] max-w-[600px] bg-gray-100 rounded-lg">
         
-            <div className="text-2xl mt-3 font-bold text-center">New Booking</div>
-            <div className="bg-slate-100 rounded-lg p-5 flex flex-col items-center space-y-6">
-              <TextField 
-                name='Name' 
-                label='Name' 
-                variant='standard' 
-                className="w-[100%]"
-                value={name || ''}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <TextField 
-                name='Lastname' 
-                label='Lastname' 
-                variant='standard' 
-                className="w-[100%]" 
-                value={lastName || ''}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-              <TextField 
-                name='Citizen ID' 
-                label='Citizen ID' 
-                variant='standard' 
-                className="w-[100%]" 
-                value={cid || ''}
-                onChange={(e) => setCid(e.target.value)}
-              />
+        {
+          isCreating
+              ? <div className="absolute top-0 left-0 flex flex-col gap-y-3 justify-center items-center rounded-lg text-slate-50 w-full h-full bg-black/30 z-[9999]">
+                  <CircularProgress thickness={6}/>
+                  <div>creating booking...</div>
+                </div>
+              :''
+        }
 
+        {
+          <div className='absolute top-0 left-0 z-[9999] hidden items-center w-full h-full bg-black/30' ref={popupBox}>
+            <div className="relative flex flex-col gap-y-3 mx-auto p-2 justify-center text-center
+                            rounded-lg text-green-500 text-2xl bg-slate-50 
+                            border-2 border-slate-400 w-[450px] h-[250px]">
+              <button className='absolute top-3 right-3'
+                onClick={()=>popupBox.current!.style.display = "none"}>
+                <CloseIcon fontSize="large" className=' text-slate-400 hover:text-slate-600'/>
+              </button>
+              <CheckCircleOutlineIcon fontSize="large" className='self-center'/>
+              <div>YOUR BOOKING HAS BEEN CREATED !</div>
+            </div>
+          
+          </div>
+        }
+
+            <div className="bg-slate-100 rounded-lg p-5 flex flex-col items-center space-y-6">
+
+              <div className="text-2xl mb-2 font-bold text-center">New Booking</div>
+              
               <div className='self-start pl-1 font-light text-gray-500'>Select hotel</div>
               <Select id="hospital" defaultValue={hid} variant='standard' className="w-[100%]" onChange={(e)=>setHotel(e.target.value as string)}>
                 {
@@ -116,10 +125,14 @@ export default function Home() {
               
               <DateReserve onDateChange={(value:Dayjs)=>{setBookDate(value)}}/>
               
+              <div className='w-full h-7 text-xl text-center text-red-700' ref={errorBox}>
+              </div>
+
               <button
-              name='Book Vaccine' 
-              className='max-w-[500px] bg-blue-500 hover:bg-blue-700 text-xl text-white font-bold py-2 px-4 rounded w-[100%] transition-all'
-              onClick={makeBooking}>
+                name='Book Vaccine' 
+                className='max-w-[500px] bg-blue-500 hover:bg-blue-700 text-xl text-white font-bold py-2 px-4 rounded w-[100%] transition-all'
+                onClick={makeBooking}
+              >
                   Book Hotel
               </button>
             </div>
