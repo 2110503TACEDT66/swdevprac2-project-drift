@@ -6,9 +6,12 @@ import { useRef } from "react"
 
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
-import { CircularProgress } from "@mui/material"
+import { Button, CircularProgress } from "@mui/material"
+import dayjs, { Dayjs } from "dayjs"
 
 import { useState } from "react";
+import updateBooking from "@/libs/booking/updateBooking"
+import DateReserve from "./DateReserve"
 
 export default function BookingList({ myBookingData }: { myBookingData: populatedBookingItem[] }) {
     const { data: session, status } = useSession();
@@ -32,31 +35,130 @@ export default function BookingList({ myBookingData }: { myBookingData: populate
             if (errorBox.current) {
                 errorBox.current.innerText = "Cannot delete booking. Please try again.";
             }
+            console.log(error);
         }
+        
+    }
 
+    const [editState, setEditState] = useState<{ editing: boolean, bookingId: string | null }>({ editing: false, bookingId: null });
+    const [editedBooking, setEditedBooking] = useState<populatedBookingItem | null>(null);
+
+    const editBooking = (bookingId: string) => {
+        const bookingToEdit = bookings.find(booking => booking._id === bookingId);
+        if (bookingToEdit) {
+            setEditedBooking(bookingToEdit);
+            setEditState({ editing: true, bookingId });
+        }
+    }
+
+    const cancelEdit = () => {
+        setEditedBooking(null);
+        setEditState({ editing: false, bookingId: null });
+    }
+
+    
+    const updateBookingDetails = async () => {
+        try {
+            console.log(editState.bookingId)
+            console.log(session?.user.token)
+            if (editState.bookingId)
+                await updateBooking(editState.bookingId, session!.user.token, editedBooking!.hotel.name, editedBooking!.bookDate)
+            
+            setEditedBooking(null);
+            setEditState({ editing: false, bookingId: null });
+        } catch (error) {
+            console.error("Error updating booking:", error);
+        }
+    }
+
+    const updateBookingDate = (newDate: Dayjs) => {
+        setEditedBooking(prevState => ({
+            ...prevState!,
+            bookDate: dayjs(newDate).format("YYYY/MM/DD")
+        }));
     }
 
     return (
-        <>
-            <div className="text-slate-100 text-xl mt-5 px-5 md:text-2xl">You have {bookings.length} bookings</div>
-            {bookings.length > 0 ? (
-                bookings.map((bookingItem: populatedBookingItem) => (
-                    <div className="bg-slate-200 rounded px-5 mx-5 py-2 my-5" key={bookingItem._id}>
-                        <div className="text-xl">{bookingItem.bookDate}</div>
-                        <div className="text-xl">Booking id: {bookingItem._id}</div>
-                        <div className="text-xl">Hotel: {bookingItem.hotel.name}</div>
-                        <button
-                            className='max-w-[500px] ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-[100%] transition-all'
-                            onClick={() => removeBooking(bookingItem._id)}>
-                            Remove Booking
-                        </button>
+        <div>
+            {
+                session?.user.role === "admin"
+                ?   <div className="text-slate-100 text-xl mt-5 px-5 md:text-2xl">
+                        Total bookings are {bookings.length}
                     </div>
-                ))
-            ) : (
-                <div className="w-full text-center text-white mt-4 text-2xl">
-                    You have no booking reservations
-                </div>
-            )}
+                :   <div className="text-slate-100 text-xl mt-5 px-5 md:text-2xl">
+                        You have {bookings.length} bookings
+                    </div>
+            }
+            <div className="w-full flex flex-col justify-center items-center">
+                {bookings.length > 0 ? (
+                    bookings.map((bookingItem: populatedBookingItem) => (
+                        <div className="bg-slate-200 rounded m-5 p-3 w-[95%] md:max-w-[450px] lg:max-w-[600px] flex flex-col items-end" key={bookingItem._id}>
+                            <table className="mx-auto border-separate border-spacing-2 rounded-md min-w-[40%]">
+                                <tbody>
+                                    <tr>
+                                        <td className="text-sm md:text-xl break-all">Booking ID</td>
+                                        <td className="text-sm md:text-xl break-all">{bookingItem._id}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="text-sm md:text-xl break-all">Hotel</td>
+                                        <td className="text-sm md:text-xl break-all">
+                                        {
+                                            editState.editing && editState.bookingId === bookingItem._id ? (
+                                                // Render editable field if currently editing this booking
+                                                // TODO : Add Dropdown field
+                                                "dropdown field"
+                                            ) : (
+                                                // Render non-editable field if not editing this booking
+                                                bookingItem.hotel.name
+                                            )
+                                        }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="text-sm md:text-xl break-all">Book for</td>
+                                        <td className="text-sm md:text-xl break-all">
+                                        {
+                                            editState.editing && editState.bookingId === bookingItem._id ? (
+                                            // Render editable field if currently editing this booking
+                                            <DateReserve onDateChange={(value:Dayjs) => updateBookingDate(value)} />
+                                        ) : (
+                                            // Render non-editable field if not editing this booking
+                                            dayjs(bookingItem.bookDate).format('DD/MM/YYYY')
+                                        )}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div className="flex flex-row gap-2">
+                                {
+                                    editState.editing && editState.bookingId === bookingItem._id ? (
+                                        // Render save and cancel buttons if currently editing this booking
+                                        <>
+                                            <Button variant="outlined" onClick={updateBookingDetails}>Save</Button>
+                                            <Button variant="outlined" onClick={cancelEdit}>Cancel</Button>
+                                        </>
+                                    ) : (
+                                        // Render edit button if not editing this booking
+                                        <Button variant="outlined" onClick={() => editBooking(bookingItem._id)}>Edit</Button>
+                                    )
+                                }
+                                <Button
+                                    variant="outlined"
+                                    color="error"
+                                    className='text-red font-bold rounded w-fit transition-all'
+                                    onClick={() => removeBooking(bookingItem._id)}>
+                                    Remove
+                                </Button>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="w-full text-center text-white mt-4 text-2xl">
+                        You have no booking reservations
+                    </div>
+                )}
+            </div>
             {
           <div className='absolute top-0 left-0 z-[9999] hidden items-center w-full h-full bg-black/30' ref={popupBox}>
             <div className="relative flex flex-col gap-y-3 mx-auto p-2 justify-center text-center
@@ -72,6 +174,6 @@ export default function BookingList({ myBookingData }: { myBookingData: populate
           
           </div>
         }
-        </>
+        </div>
     )
 }

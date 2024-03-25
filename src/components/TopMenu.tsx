@@ -25,7 +25,7 @@ export default async function TopMenu(){
                         session
                             ?   <Link href={"/api/auth/signout"} className="w-full h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
                                     text-2xl hover:bg-slate-800 " underline="none">
-                                    <div className="text-gray-100"> <Logout fontSize="medium"/> &nbsp;Sign-Out</div>
+                                    <div className="text-gray-100"> <Logout fontSize="medium"/> &nbsp;Sign-Out from {session.user.name}</div>
                                 </Link>
                             :   <div className="flex flex-col justify-center items-center w-full h-full gap-y-5">
                                     <Link href={"/api/auth/signin"} className="w-full h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
@@ -65,7 +65,7 @@ export default async function TopMenu(){
             <Hidden smDown>
                 {
                     session
-                        ?   <div className="flex justify-end mb-auto mt-auto"><TopMenuItem title={"Sign-Out"} pageRef="/api/auth/signout"/></div>
+                        ?   <div className="flex justify-end mb-auto mt-auto"><TopMenuItem title={"Sign-Out from " + session.user.name} pageRef="/api/auth/signout"/></div>
                         :   <div className="flex justify-end mb-auto mt-auto">
                                 <TopMenuItem title={"Sign-In"} pageRef="/api/auth/signin"/>
                                 <TopMenuItem title={"Register"} pageRef="/api/auth/register"/>
