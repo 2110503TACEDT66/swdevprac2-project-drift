@@ -9,11 +9,7 @@
     _id: string,
     name: string,
     address: string,
-    district: string,
-    province: string,
-    postalcode: string,
     tel: string,
-    region:string,
     id: string
   }
   

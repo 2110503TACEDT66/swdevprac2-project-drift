@@ -14,9 +14,7 @@ export default function Card(
             </h2>
 
             <ul className="pl-3 text-gray-100 font-light text-lg">
-                <li> <b>District:</b> {data.district}</li>
                 <li> <b>Address:</b> {data.address}</li>
-                <li> <b>Province:</b> {data.province}</li>
                 <li> <b>TEL:</b> {data.tel}</li>
             </ul>
      
