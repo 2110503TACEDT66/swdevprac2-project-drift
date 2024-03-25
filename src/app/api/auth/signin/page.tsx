@@ -33,7 +33,7 @@ export default function SignIn(){
     setIsLoad(false)
     
     const session = getSession();
-    if(!session) errorBox.current!.innerText = "plese try again"
+    if(!session) errorBox.current!.innerText = "Please try again"
   }
 
   return (
@@ -51,13 +51,13 @@ export default function SignIn(){
 
       <h1 className="w-fit text-3xl font-bold mb-2">Login</h1>
 
-      <TextField label="email"
+      <TextField label="Email"
         onChange={(e)=>{useremail.current = e.target.value; errorBox.current!.innerText = "";}} 
         size="small" className="w-[90%]"
         autoComplete="off"
       />
       
-      <TextField label="password" type="password"
+      <TextField label="Password" type="password"
         onChange={(e)=>{userpassword.current = e.target.value; errorBox.current!.innerText = ""; }} 
         size="small" className="w-[90%]"
         autoComplete="off"

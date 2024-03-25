@@ -104,16 +104,18 @@ export default function Home() {
 
               <div className="text-2xl mb-2 font-bold text-center">New Booking</div>
               
-              <div className='self-start pl-1 font-light text-gray-500'>Select hotel</div>
-              <Select id="hospital" defaultValue={hid} variant='standard' className="w-[100%]" onChange={(e)=>setHotel(e.target.value as string)}>
-                {
-                    hotelData.map((elem,_)=>(
-                        <MenuItem key={elem.id } value={elem.id}>
-                            {elem.name}
-                        </MenuItem>
-                    ))
-                }
-              </Select>
+              <div className="w-[80%] p-3">
+                <div className='self-start pl-1 font-light text-gray-500'>Select hotel</div>
+                <Select id="hotel" defaultValue={hid} variant='standard' className="w-[100%]" onChange={(e)=>setHotel(e.target.value as string)}>
+                  {
+                      hotelData.map((elem,_)=>(
+                          <MenuItem key={elem.id } value={elem.id}>
+                              {elem.name}
+                          </MenuItem>
+                      ))
+                  }
+                </Select>
+              </div>
 
               {/* <Autocomplete
                 id="combo-box-demo"

@@ -10,6 +10,7 @@ import { Login, Logout } from '@mui/icons-material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import QueueIcon from '@mui/icons-material/Queue';
 import BedIcon from '@mui/icons-material/Bed';
+import BusinessIcon from '@mui/icons-material/Business';
 import { signOut } from "next-auth/react"
 
 export default async function TopMenu(){
@@ -46,6 +47,10 @@ export default async function TopMenu(){
                         :   null
                     }
 
+                    <Link href="/hotel" underline="none" className="w-full text-center p-2 pl-3 pr-3 text-2xl hover:bg-slate-800 text-gray-100">
+                        <div className="text-gray-100"> <BusinessIcon fontSize="medium" /> &nbsp;&nbsp;Hotels</div>
+                    </Link>
+
                     <Link href="/mybooking" underline="none" className="w-full text-center p-2 pl-3 pr-3 text-2xl hover:bg-slate-800 text-gray-100">
                         <div className="text-gray-100"> <AutoStoriesIcon fontSize="medium" /> &nbsp;&nbsp;My Booking</div>
                     </Link>
@@ -78,8 +83,13 @@ export default async function TopMenu(){
                         :   null
                 }
 
-                <div className="flex justify-end mb-auto mt-auto"><TopMenuItem title={"My Booking"} pageRef="/mybooking"/></div>
-                <TopMenuItem title={"Booking"} pageRef="/booking"/>
+                <div className="flex justify-end mb-auto mt-auto">
+                    <TopMenuItem title={"My Booking"} pageRef="/mybooking"/>
+                </div>
+                <div className="flex justify-end mb-auto mt-auto ml-auto">
+                    <TopMenuItem title={"Hotels"} pageRef="/hotel"/>
+                    <TopMenuItem title={"Book Now"} pageRef="/booking"/>
+                </div>
             </Hidden>
             
             <Link href={"/"}>
