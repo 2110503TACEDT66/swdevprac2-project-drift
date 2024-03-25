@@ -1,7 +1,7 @@
 "use client"
 import { ClassNames } from "@emotion/react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { CircularProgress, IconButton, InputAdornment, TextField } from "@mui/material";
+import { Button, CircularProgress, IconButton, InputAdornment, TextField } from "@mui/material";
 import { getSession, signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
@@ -9,27 +9,26 @@ import { useRef, useState } from "react";
 export default function SignIn(){
   
   const redirect = useSearchParams();
-  const useremail = useRef("");
-  const userpassword = useRef("");
+  const [useremail,setUserEmail] = useState("");
+  const [userpassword,setUserPassword] = useState("");
   const errorBox = useRef<HTMLDivElement|null>(null);
-  const [showPassword,setShowPassword] = useState(false);
 
   const  [isload , setIsLoad] = useState(false);
   
+  const areAllFieldsFilled = () => {
+    return useremail && userpassword
+  }
+
   const handleSignIn = async () =>{
-    if(useremail.current.length==0 || userpassword.current.length==0){
-      errorBox.current!.innerText = "field cannot empty";
-      return;
-    }
 
     setIsLoad(true)
 
-    await signIn('credentials', {
-      email: useremail.current,
-      password: userpassword.current,
-      callbackUrl:redirect.get("callbackUrl")??"/"
-    });
-
+      await signIn('credentials', {
+        email: useremail,
+        password: userpassword,
+        callbackUrl:redirect.get("callbackUrl")??"/"
+      });
+  
     setIsLoad(false)
     
     const session = getSession();
@@ -51,14 +50,15 @@ export default function SignIn(){
 
       <h1 className="w-fit text-3xl font-bold mb-2">Login</h1>
 
-      <TextField label="Email"
-        onChange={(e)=>{useremail.current = e.target.value; errorBox.current!.innerText = "";}} 
+      <TextField label="email"
+        onChange={(e)=>{setUserEmail(e.target.value); errorBox.current!.innerText = "";}} 
         size="small" className="w-[90%]"
+        type="email"
         autoComplete="off"
       />
       
-      <TextField label="Password" type="password"
-        onChange={(e)=>{userpassword.current = e.target.value; errorBox.current!.innerText = ""; }} 
+      <TextField label="password" type="password"
+        onChange={(e)=>{setUserPassword(e.target.value); errorBox.current!.innerText = ""; }} 
         size="small" className="w-[90%]"
         autoComplete="off"
       />
@@ -67,10 +67,12 @@ export default function SignIn(){
  
       </div>
 
-      <button onClick={handleSignIn}
-        className="text-xl bg-blue-500 p-2 text-slate-100 rounded-md w-[80%] max-w-[250px] hover:bg-blue-700 transition-colors">
+      <Button onClick={handleSignIn}
+        variant="contained"
+        disabled={!areAllFieldsFilled()}
+        className="text-xl bg-blue-500 p-2 font-kanit text-slate-100 rounded-md w-[80%] max-w-[250px] hover:bg-blue-700 transition-colors">
           Login
-      </button>
+      </Button>
     
     </div>
   )

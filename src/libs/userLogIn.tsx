@@ -12,6 +12,6 @@ export default async function userLogIn(userEmail:string , userPassword:string){
             password:userPassword
         })
     })
-    if(!response.ok) throw new Error("Can't find user")
+    if(!response.ok){ throw new Error("You have entered an invalid username or password")}
     return await response.json()
 }

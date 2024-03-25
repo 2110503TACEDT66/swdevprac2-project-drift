@@ -1,15 +1,20 @@
-export default async function createBooking(hid:string, token:string) {
-    const response = await fetch("https://swd-hotel-backend.vercel.app/api/v1/hotels/" + hid + "/bookings",{
+
+export default async function createBooking(hid:string , date:string ,token:string){
+    const response = await fetch(`https://swd-hotel-backend.vercel.app/api/v1/hotels/${hid}/bookings/`,{
         method:"POST",
-        headers: {
+        mode:"cors",
+        cache:"no-cache",
+        headers:{
             "Content-Type":"application/json",
-            authorization:`Bearer ${token}`,
+            authorization:`Bearer ${token}`   
         },
         body: JSON.stringify({
-            bookDate: Date.now()
+            bookDate:date
         })
     })
-    if(!response.ok) throw new Error("Cannot CREATE booking")
-    return response.json()
-
+    if(!response.ok){
+        const errResult = await response.json()
+        throw new Error(errResult.message)
+    }
+    return await response.json()
 }

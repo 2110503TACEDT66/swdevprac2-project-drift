@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { BookingItem } from '../../../interface';
 import { HotelItem } from '../../../interface';
 import Loading from './loading';
-import createBooking from '@/libs/createBooking';
+import createBooking from '@/libs/booking/createBooking';
 
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
@@ -44,7 +44,8 @@ export default function Home() {
          popupBox.current!.style.display = "flex";
       } 
       catch (error) {
-        errorBox.current!.innerText = "Cannot create a booking. Please try again.";
+        const errorMsg = String(error)
+        errorBox.current!.innerText = errorMsg.substring(6);
       }
       
       setIsCreating(false);
@@ -127,7 +128,7 @@ export default function Home() {
               
               <DateReserve onDateChange={(value:Dayjs)=>{setBookDate(value)}}/>
               
-              <div className='w-full h-7 text-xl text-center text-red-700' ref={errorBox}>
+              <div className='w-full min-h-7 text-xl text-center text-red-700' ref={errorBox}>
               </div>
 
               <button
