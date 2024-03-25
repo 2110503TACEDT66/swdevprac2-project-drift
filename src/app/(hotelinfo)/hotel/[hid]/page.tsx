@@ -21,9 +21,6 @@ export default async function Page({params}:{params:{hid:string}}){
                         </div>
                         <ul className=" mt-5 w-full space-y-2 indent-2 font-kanit font-light text-[1.25em]">
                             <li> <b>Address:</b> {hotel.data.address}</li>
-                            <li> <b>District:</b> {hotel.data.district}</li>
-                            <li> <b>Province:</b> {hotel.data.province}</li>
-                            <li> <b>Postal Code:</b> {hotel.data.postalcode}</li>
                             <li> <b>TEL:</b> {hotel.data.tel}</li>
                         </ul>
                    </div>

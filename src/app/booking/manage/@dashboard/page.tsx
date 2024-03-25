@@ -1,46 +1,37 @@
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import getUserProfile from "@/libs/getUserProfile"
-import Hotel from "@/db/names/Hotel"
-import { dbConnect } from "@/db/dbConnect"
 import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
 import dayjs from 'dayjs';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import createHotel from "@/libs/createHotel"
+import { HotelItem } from "../../../../../interface"
 
 export default async function DashboardPage() {
+    const session = await getServerSession(authOptions)
+    if(!session || !session.user.token) return null
 
     const addHotel = async (addHotelForm:FormData) => {
         "use server"
-        const name =addHotelForm.get("name")
-        const address =addHotelForm.get("address")
-        const district =addHotelForm.get("district")
-        const province =addHotelForm.get("province")
-        const postalcode =addHotelForm.get("postalcode")
-        const tel =addHotelForm.get("tel")
-        const region =addHotelForm.get("region")
+        const name = addHotelForm.get("name") as string
+        const address = addHotelForm.get("address") as string
+        const tel = addHotelForm.get("tel") as string
 
-        try {
-            await dbConnect()
-            const hotels = await Hotel.create({
-                "name": name,
-                "address": address,
-                "district": district,
-                "province": province,
-                "postalcode": postalcode,
-                "tel": tel,
-                "region": region,
-            })
+        const item:HotelItem = {
+            name: name,
+            address: address,
+            tel: tel,
+            id: "",
+            _id: ""
         }
-        catch(error) {
-            console.log(error)
+
+        const success = await createHotel(item, session.user.token)
+
+        if (success) {
+            redirect("/hotel")
         }
-        revalidateTag("hotels")
-        redirect("/hotel")
     }
-
-    const session = await getServerSession(authOptions)
-    if(!session || !session.user.token) return null
 
     const profile = await getUserProfile(session.user.token)
     var createdAt = new Date(profile.data.createdAt)
@@ -86,54 +77,10 @@ export default async function DashboardPage() {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label className="w-auto block text-gray-700 pr-4" htmlFor="district">District</label>
-                                    </td>
-                                    <td>
-                                        <input type='text' required id="district" name="district" placeholder="Hotel District"
-                                        className="bg-white border-2 border-gray-200 rounded w-full p-2
-                                        text-gray-700 focus:outline-none focus-border-blue-400"
-                                        />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label className="w-auto block text-gray-700 pr-4" htmlFor="province">Province</label>
-                                    </td>
-                                    <td>
-                                        <input type='text' required id="province" name="province" placeholder="Hotel Province"
-                                        className="bg-white border-2 border-gray-200 rounded w-full p-2
-                                        text-gray-700 focus:outline-none focus-border-blue-400"
-                                        />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label className="w-auto block text-gray-700 pr-4" htmlFor="postalcode">Postalcode</label>
-                                    </td>
-                                    <td>
-                                        <input type='text' required id="postalcode" name="postalcode" placeholder="Hotel Postalcode"
-                                        className="bg-white border-2 border-gray-200 rounded w-full p-2
-                                        text-gray-700 focus:outline-none focus-border-blue-400"
-                                        />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
                                         <label className="w-auto block text-gray-700 pr-4" htmlFor="tel">Tel.</label>
                                     </td>
                                     <td>
                                         <input type='text' required id="tel" name="tel" placeholder="Hotel Tel. number"
-                                        className="bg-white border-2 border-gray-200 rounded w-full p-2
-                                        text-gray-700 focus:outline-none focus-border-blue-400"
-                                        />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label className="w-auto block text-gray-700 pr-4" htmlFor="region">Region</label>
-                                    </td>
-                                    <td>
-                                        <input type='text' required id="region" name="region" placeholder="Hotel Region"
                                         className="bg-white border-2 border-gray-200 rounded w-full p-2
                                         text-gray-700 focus:outline-none focus-border-blue-400"
                                         />
