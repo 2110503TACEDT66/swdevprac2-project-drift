@@ -14,11 +14,11 @@ export default function Register() {
   const [userPassword, setUserPassword] = useState('');
 
   const [errorMessage, setErrorMessage] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isLoad, setIsLoad] = useState(false);
 
   const handleRegister = async () => {
     try {
-      setLoading(true) // Set loading to true when registration starts
+      setIsLoad(true) // Set loading to true when registration starts
 
       // Call registration function
       const userData = await userRegister(userName, userTel, userEmail, userPassword);
@@ -43,7 +43,7 @@ export default function Register() {
       console.error('Failed to register user', error);
       setErrorMessage('Registration failed. Please try again.');
     } finally {
-      setLoading(false); // Set loading back to false when registration process finishes
+      setIsLoad(false); // Set loading back to false when registration process finishes
     }
   };
 
@@ -59,31 +59,41 @@ export default function Register() {
       justifyContent="center"
       mt={4}
     >
+      {
+        isLoad
+            ? <div className="absolute top-0 left-0 flex flex-col gap-y-3 justify-center items-center rounded-lg text-slate-50 w-full h-full bg-black/30 z-[9999]">
+                <CircularProgress thickness={6}/>
+                <div>registering...</div>
+              </div>
+            :''
+      }
+
+
       <Box
         className="bg-slate-200 rounded-lg p-5 flex flex-col justify-center items-center"
         sx={{ minWidth:'400px', width: '50%', maxWidth: '500px' }}
       >
         <h1 className='text-3xl font-bold mb-2'>Register</h1>
 
-        <TextField label="Name" value={userName} fullWidth margin="normal"
+        <TextField size="small" label="Name" value={userName} fullWidth margin="normal"
           onChange={(e) => setUserName(e.target.value)}
         />
-        <TextField label="Telephone" value={userTel} fullWidth margin="normal"
+        <TextField size="small" label="Telephone" value={userTel} fullWidth margin="normal"
           onChange={(e) => setUserTel(e.target.value)}
         />
-        <TextField label="Email" type="email" value={userEmail} margin="normal" fullWidth
+        <TextField size="small" label="Email" type="email" value={userEmail} margin="normal" fullWidth
           onChange={(e) => setUserEmail(e.target.value)}
         />
-        <TextField label="Password" type="password" value={userPassword} fullWidth margin="normal"
+        <TextField size="small" label="Password" type="password" value={userPassword} fullWidth margin="normal"
           onChange={(e) => setUserPassword(e.target.value)}
         />
 
-        {errorMessage && (
-          <p className="text-red-500 mb-2">{errorMessage}</p> // Render error message if exists
-        )}
+
+          <p className="text-red-700 self-end text-lg min-h-10 mb-2">{errorMessage}</p>
+ 
 
         <Button variant='contained' color='primary' onClick={handleRegister} className='w-full mt-4 bg-blue-500 text-xl font-kanit' disabled={!areAllFieldsFilled()}>
-            {loading ? <CircularProgress size={24} color="inherit" /> : 'Register'}
+            Register
         </Button>
 
       </Box>

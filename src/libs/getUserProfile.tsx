@@ -3,7 +3,7 @@ export default async function getUserProfile(token:string) {
         method:"GET",
         headers:{
             authorization:`Bearer ${token}`   
-        }
+        },
      })
      if(!response.ok) throw new Error("Cannot GET userProfile")
      return response.json()

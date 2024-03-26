@@ -212,13 +212,13 @@ export default function BookingList({ myBookingData }: { myBookingData: populate
             {
           <div className='absolute top-0 left-0 z-[9999] hidden items-center w-full h-full bg-black/30' ref={popupBox}>
             <div className="relative flex flex-col gap-y-3 mx-auto p-2 justify-center text-center
-                            rounded-lg text-green-500 text-2xl bg-slate-50 
+                            rounded-lg text-orange-600 text-2xl bg-slate-50 
                             border-2 border-slate-400 w-[450px] h-[250px]">
               <button className='absolute top-3 right-3'
                 onClick={()=>popupBox.current!.style.display = "none"}>
                 <CloseIcon fontSize="large" className=' text-slate-400 hover:text-slate-600'/>
               </button>
-              <CheckCircleOutlineIcon fontSize="large" className='self-center'/>
+              <CheckCircleOutlineIcon fontSize="large" className='self-center' color="warning" />
               <div>YOUR BOOKING HAS BEEN DELETED !</div>
             </div>
           
