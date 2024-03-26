@@ -9,9 +9,6 @@ import { useSession } from "next-auth/react"
 
 import { CircularProgress } from "@mui/material"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import CloseIcon from '@mui/icons-material/Close';
-
 
 
 export default function DashboardPage() {

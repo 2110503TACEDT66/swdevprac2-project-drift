@@ -1,6 +1,6 @@
 "use client"
 import DateReserve from '@/components/DateReserve';
-import { Select, MenuItem, CircularProgress} from '@mui/material';
+import { TextField, Select, MenuItem, CircularProgress} from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
@@ -84,7 +84,7 @@ export default function Home() {
               :''
         }
 
-        
+          
           <div className='absolute top-0 left-0 z-[9999] hidden items-center w-full h-full bg-black/30' ref={popupBox}>
             <div className="relative flex flex-col gap-y-3 mx-auto p-2 justify-center text-center
                             rounded-lg text-green-500 text-2xl bg-slate-50 
@@ -116,6 +116,14 @@ export default function Home() {
                   }
                 </Select>
               </div>
+
+              {/* <Autocomplete
+                id="combo-box-demo"
+                options={hotelData}
+                sx={{ width: 300 }}
+                onChange={(e,value:string)=>setHotel(value)}
+                renderInput={(params) => <TextField {...params} label="Hospital" />}
+              /> */}
               
               <DateReserve onDateChange={(value:Dayjs)=>{setBookDate(value)}}/>
               
