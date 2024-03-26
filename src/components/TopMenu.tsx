@@ -64,7 +64,7 @@ export default async function TopMenu(){
                     session
                         ?   <div className="flex justify-end mb-auto mt-auto">
                                 <span className="text-red-600"><TopMenuItem title={"Sign-Out"} pageRef="/api/auth/signout"/></span>
-                                <TopMenuItem title={"Profile"} pageRef="/booking/manage"/>
+                                <TopMenuItem title={"Profile"} pageRef="/user"/>
                             </div>
                         :   <div className="flex justify-end mb-auto mt-auto">
                                 <TopMenuItem title={"Sign-In"} pageRef="/api/auth/signin"/>

@@ -3,7 +3,7 @@ import getUserProfile from "@/libs/getUserProfile"
 import { useRouter } from "next/navigation"
 import dayjs from 'dayjs';
 import createHotel from "@/libs/hotel/createHotel"
-import { HotelItem } from "../../../../../interface"
+import { HotelItem } from "../../../../interface";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react"
 
@@ -93,8 +93,6 @@ export default function DashboardPage() {
                           :''
                     }
                     
-  
-
 
                     <div className="text-xl lg:text-2xl 2xl:text-3xl text-blue-700 text-center">Create Hotel</div>
                         <table className="w-full bg-slate-100 mx-auto table-auto border-separate border-spacing-2 p-3 rounded-md max-w-2xl">
