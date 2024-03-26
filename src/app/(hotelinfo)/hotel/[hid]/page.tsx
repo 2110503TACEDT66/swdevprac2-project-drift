@@ -1,14 +1,15 @@
 import getHotel from "@/libs/hotel/getHotel";
 import Image from "next/image";
 import Link from "next/link";
+import { HotelItem, SingleHotelJson } from "../../../../../interface";
 
 export default async function Page({params}:{params:{hid:string}}){
 
-    var hotel;
+    var hotel:SingleHotelJson;
     try{
         hotel = await getHotel(params.hid);
     }catch(error){
-        hotel = null    
+        return null 
     }
 
     return(

@@ -12,6 +12,14 @@
     tel: string,
     id: string
   }
+
+  export interface SingleHotelJson {
+    success: boolean,
+    pagination: Object,
+    data: HotelItem
+  }
+
+
   
   export interface BookingItem {
     _id:string

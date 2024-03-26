@@ -140,6 +140,10 @@ export default function BookingList({ myBookingData }: { myBookingData: populate
                                         <td className="text-sm md:text-xl break-all">{bookingItem._id}</td>
                                     </tr>
                                     <tr>
+                                        <td className="text-sm md:text-xl break-all">User ID</td>
+                                        <td className="text-sm md:text-xl break-all">{bookingItem.user}</td>
+                                    </tr>
+                                    <tr>
                                         <td className="text-sm md:text-xl break-all">Hotel</td>
                                         <td className="text-sm md:text-xl break-all">
                                         {
@@ -159,7 +163,10 @@ export default function BookingList({ myBookingData }: { myBookingData: populate
                                                 </div>
                                             ) : (
                                                 // Render non-editable field if not editing this booking
-                                                bookingItem.hotel.name
+                                                <Button className="bg-indigo-200 text-black hover:bg-indigo-300 shadow-md p-1 pl-2 pr-2 text-sm  md:text-base font-kanit rounded-sm transition-colors"
+                                                    href={`/hotel/${bookingItem.hotel.id}`}>    
+                                                    {bookingItem.hotel.name}
+                                                </Button>
                                             )
                                         }
                                         </td>
