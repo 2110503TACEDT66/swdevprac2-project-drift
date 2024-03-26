@@ -11,7 +11,6 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import QueueIcon from '@mui/icons-material/Queue';
 import BedIcon from '@mui/icons-material/Bed';
 import BusinessIcon from '@mui/icons-material/Business';
-import { signOut } from "next-auth/react"
 
 export default async function TopMenu(){
 
@@ -24,17 +23,17 @@ export default async function TopMenu(){
                     {
                         session
                             ?   <Link href={"/api/auth/signout"} className="w-full h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
-                                    text-2xl hover:bg-slate-800 " underline="none">
-                                    <div className="text-gray-100"> <Logout fontSize="medium"/> &nbsp;Sign-Out from {session.user.name}</div>
+                                    text-2xl hover:bg-slate-800" underline="none">
+                                    <div className="text-gray-100 line-clamp-1"> <Logout fontSize="medium"/> &nbsp;Sign-Out from {session.user.name}</div>
                                 </Link>
                             :   <div className="flex flex-col justify-center items-center w-full h-full gap-y-5">
                                     <Link href={"/api/auth/signin"} className="w-full h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
                                     text-2xl hover:bg-slate-800 " underline="none">
-                                        <div className="text-gray-100"> <Login fontSize="medium" /> &nbsp;Sign-In</div>
+                                        <div className="text-gray-100 line-clamp-1"> <Login fontSize="medium" /> &nbsp;Sign-In</div>
                                     </Link>
                                     <Link href={"/api/auth/register"} className="w-full h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
                                     text-2xl hover:bg-slate-800 " underline="none">
-                                        <div className="text-gray-100"> <AssignmentIndIcon fontSize="medium" /> &nbsp;Register</div>
+                                        <div className="text-gray-100 line-clamp-1"> <AssignmentIndIcon fontSize="medium" /> &nbsp;Register</div>
                                     </Link>
                                 </div>
                     }
@@ -42,21 +41,21 @@ export default async function TopMenu(){
                     session && session.user.role === "admin"
                         ?   <Link href={"/booking/manage"} className="w-full h-fit p-2 pl-3 pr-3 mt-auto mb-auto text-center text-gray-100
                             text-2xl hover:bg-slate-800 " underline="none">
-                                <div className="text-gray-100"> <BedIcon fontSize="medium"/> &nbsp;Manage</div>
+                                <div className="text-gray-100 line-clamp-1"> <BedIcon fontSize="medium"/> &nbsp;Manage</div>
                             </Link>
                         :   null
                     }
 
                     <Link href="/hotel" underline="none" className="w-full text-center p-2 pl-3 pr-3 text-2xl hover:bg-slate-800 text-gray-100">
-                        <div className="text-gray-100"> <BusinessIcon fontSize="medium" /> &nbsp;&nbsp;Hotels</div>
+                        <div className="text-gray-100 line-clamp-1"> <BusinessIcon fontSize="medium" /> &nbsp;&nbsp;Hotels</div>
                     </Link>
 
                     <Link href="/mybooking" underline="none" className="w-full text-center p-2 pl-3 pr-3 text-2xl hover:bg-slate-800 text-gray-100">
-                        <div className="text-gray-100"> <AutoStoriesIcon fontSize="medium" /> &nbsp;&nbsp;My Booking</div>
+                        <div className="text-gray-100 line-clamp-1"> <AutoStoriesIcon fontSize="medium" /> &nbsp;&nbsp;My Booking</div>
                     </Link>
 
                     <Link href="/booking" underline="none" className="w-full text-center p-2 pl-3 pr-3 text-2xl hover:bg-slate-800 text-gray-100">
-                        <div className="text-gray-100"> <QueueIcon fontSize="medium" /> &nbsp;&nbsp;Booking</div>
+                        <div className="text-gray-100 line-clamp-1"> <QueueIcon fontSize="medium" /> &nbsp;&nbsp;Booking</div>
                     </Link>
 
                 </DrawerPanel>
@@ -88,7 +87,10 @@ export default async function TopMenu(){
                 </div>
                 <div className="flex justify-end mb-auto mt-auto ml-auto">
                     <TopMenuItem title={"Hotels"} pageRef="/hotel"/>
-                    <TopMenuItem title={"Book Now"} pageRef="/booking"/>
+                    <Link href={"/booking"} className="w-fit p-2 pl-3 pr-3 text-ssm ml-auto mt-auto mb-auto rounded-2xl bg-blue-500 hover:bg-indigo-600
+                    sm:text-lg md:text-xl 2xl:text-2xl no-underline text-white line-clamp-1">
+                        Book Now
+                    </Link>
                 </div>
             </Hidden>
             

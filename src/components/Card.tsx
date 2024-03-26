@@ -46,7 +46,7 @@ export default function Card(
                 {
                     session?.user.role === "admin"
                     ?   
-                        <div>
+                        <div className="gap-x-2 flex">
                             <Button variant="contained" className="bg-red-500" onClick={() => {setShowConfirmation(true)}}>
                                 Delete
                             </Button>

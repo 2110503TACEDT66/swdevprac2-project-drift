@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import Card from "./Card";
 import { HotelJson } from "../../interface";
@@ -13,11 +12,13 @@ export default async function HotelCatalog({hotelsJson}:{hotelsJson:Promise<Hote
     return(
         <div className="mt-7 w-[95%] mx-auto">
             <h1 className="text-slate-100 text-2xl">{hotelsReady.count} hotels Available</h1>
-            <div className="flex flex-row flex-wrap justify-start gap-x-5 gap-y-10 pt-10 pb-10">
+            <div className="flex flex-row flex-wrap justify-center gap-x-5 gap-y-10 pt-10 pb-10">
                 {
                     hotelsReady.data.map((elem , idx)=>(
                         <Link key={idx} href={`/hotel/${elem.id}`} className="">
-                            <Card data={elem} session={session}/>
+                            <div>
+                                <Card data={elem} session={session}/>
+                            </div>
                         </Link>
                     ))
                 }
