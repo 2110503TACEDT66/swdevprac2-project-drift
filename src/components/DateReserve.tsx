@@ -15,6 +15,7 @@ export default function DateReserve({onDateChange}:{onDateChange:Function}) {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker className='bg-white'
                 value={reserveDate}
+                disablePast
                 onChange={(value) => {setReserveDate(value); onDateChange(value)}}/>
             </LocalizationProvider>
         </div>
