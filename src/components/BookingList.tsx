@@ -132,7 +132,7 @@ export default function BookingList({ myBookingData }: { myBookingData: populate
             <div className="w-full flex flex-col justify-center items-center">
                 {bookings.length > 0 ? (
                     bookings.map((bookingItem: populatedBookingItem) => (
-                        <div className="bg-slate-200 rounded m-5 p-3 w-[95%] md:max-w-[450px] lg:max-w-[600px] flex flex-col items-end" key={bookingItem._id}>
+                        <div className="bg-slate-200 rounded m-5 p-3 w-[95%] md:max-w-[600px] flex flex-col items-end" key={bookingItem._id}>
                             <table className="mx-auto border-separate border-spacing-2 rounded-md min-w-[40%]">
                                 <tbody>
                                     <tr>
@@ -185,18 +185,18 @@ export default function BookingList({ myBookingData }: { myBookingData: populate
                                     editState.editing && editState.bookingId === bookingItem._id ? (
                                         // Render save and cancel buttons if currently editing this booking
                                         <>
-                                            <Button variant="outlined" onClick={updateBookingDetails}>Save</Button>
-                                            <Button variant="outlined" onClick={cancelEdit}>Cancel</Button>
+                                            <Button variant="contained" color="success" className="bg-green-700 font-bold rounded w-fit" onClick={updateBookingDetails}>Save</Button>
+                                            <Button variant="contained" className="bg-blue-500 font-bold rounded w-fit" onClick={cancelEdit}>Cancel</Button>
                                         </>
                                     ) : (
                                         // Render edit button if not editing this booking
-                                        <Button variant="outlined" onClick={() => editBooking(bookingItem._id)}>Edit</Button>
+                                        <Button variant="contained" className="bg-blue-500 font-bold rounded w-fit" onClick={() => editBooking(bookingItem._id)}>Edit</Button>
                                     )
                                 }
                                 <Button
-                                    variant="outlined"
+                                    variant="contained"
                                     color="error"
-                                    className='text-red font-bold rounded w-fit transition-all'
+                                    className='bg-red-500 font-bold rounded w-fit'
                                     onClick={() => removeBooking(bookingItem._id)}>
                                     Remove
                                 </Button>
