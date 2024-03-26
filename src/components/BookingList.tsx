@@ -3,14 +3,16 @@ import { populatedBookingItem } from "../../interface"
 import deleteBooking from "@/libs/booking/deleteBooking"
 import { useSession } from "next-auth/react"
 import { useRef } from "react"
-
+import { useEffect } from "react"
+import Loading from "@/app/booking/loading"
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
-import { CircularProgress } from "@mui/material"
-
+import { Button, Select, MenuItem } from "@mui/material"
+import dayjs, { Dayjs } from "dayjs"
+import { HotelItem } from "../../interface"
 import { useState } from "react";
-import Link from "next/link"
-import dayjs from "dayjs"
+import updateBooking from "@/libs/booking/updateBooking"
+import DateReserve from "./DateReserve"
 
 export default function BookingList({ myBookingData }: { myBookingData: populatedBookingItem[] }) {
     const { data: session, status } = useSession();
@@ -34,37 +36,179 @@ export default function BookingList({ myBookingData }: { myBookingData: populate
             if (errorBox.current) {
                 errorBox.current.innerText = "Cannot delete booking. Please try again.";
             }
+            console.log(error);
         }
+        
+    }
 
+    const [editState, setEditState] = useState<{ editing: boolean, bookingId: string | null }>({ editing: false, bookingId: null });
+    const [editedBooking, setEditedBooking] = useState<populatedBookingItem | null>(null);
+
+    const[hotelData, setHotelData] = useState<HotelItem[]>([]);
+    const[isLoading, setLoading] = useState(true);
+
+    useEffect(()=>{
+        fetch("https://swd-hotel-backend.vercel.app/api/v1/hotels")
+          .then(res => res.json())
+          .then(data =>{
+            setHotelData(data.data);
+            setLoading(false);
+          });
+      },[])
+      if(isLoading) return <Loading/>
+      if(hotelData.length==0) setHotelData([])
+    
+
+    const editBooking = (bookingId: string) => {
+        const bookingToEdit = bookings.find(booking => booking._id === bookingId);
+        if (bookingToEdit) {
+            setEditedBooking(bookingToEdit); // Current booking to edit
+            setEditState({ editing: true, bookingId });
+        }
+    }
+
+    const cancelEdit = () => {
+        setEditedBooking(null);
+        setEditState({ editing: false, bookingId: null });
+    }
+
+    
+    const updateBookingDetails = async () => {
+        try {
+            if (editState.bookingId) {
+                // Update the booking on the backend
+                await updateBooking(editState.bookingId, session!.user.token, editedBooking!.hotel, editedBooking!.bookDate);
+                
+                // Update the local state with the edited booking data
+                setBookings(prevBookings => prevBookings.map(booking => {
+                    if (booking._id === editState.bookingId) {
+                        return editedBooking!;
+                    }
+                    return booking;
+                }));
+    
+                // Reset the edit state
+                setEditedBooking(null);
+                setEditState({ editing: false, bookingId: null });
+            }
+        } catch (error) {
+            console.error("Error updating booking:", error);
+        }
+    }
+    
+
+    const updateBookingDate = (newDate: Dayjs) => {
+        setEditedBooking(prevState => ({
+            ...prevState!,
+            bookDate: dayjs(newDate).format("YYYY/MM/DD")
+        }));
+    }
+
+    const updateBookingHotel = (newHotel: string) => {
+        const findHotel = hotelData.find(h => h._id === newHotel)
+
+        console.log(findHotel)
+        if (!findHotel) {
+            return
+        }
+        
+        setEditedBooking(prevState => ({
+            ...prevState!,
+            hotel: findHotel
+        }))
     }
 
     return (
-        <>
-            <div className="text-slate-100 text-xl mt-5 px-5 md:text-2xl">You have {bookings.length} bookings</div>
-            {bookings.length > 0 ? (
-                bookings.map((bookingItem: populatedBookingItem) => (
-                    <div className="bg-slate-200 max-w-[700px] rounded px-5 mx-5 py-2 my-5" key={bookingItem._id}>
-                        <div className="text-xl">Booking Date : {dayjs(new Date(bookingItem.bookDate)).format("DD/MM/YYYY")}</div>
-                        
-                        <div className="text-xl">Booking id: {bookingItem._id}</div>
-                        
-                        <div className="text-xl">
-                            Hotel: 
-                            <Link href={`/hotel/${bookingItem._id}`}>{bookingItem.hotel.name}</Link>
-                        </div>
-                    
-                        <button
-                            className='max-w-[400px] ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-[100%] transition-all'
-                            onClick={() => removeBooking(bookingItem._id)}>
-                            Remove Booking
-                        </button>
+        <div>
+            {
+                session?.user.role === "admin"
+                ?   <div className="text-slate-100 text-xl mt-5 px-5 md:text-2xl">
+                        Total bookings are {bookings.length}
                     </div>
-                ))
-            ) : (
-                <div className="w-full text-center text-white mt-4 text-2xl">
-                    You have no booking reservations
-                </div>
-            )}
+                :   <div className="text-slate-100 text-xl mt-5 px-5 md:text-2xl">
+                        You have {bookings.length} bookings
+                    </div>
+            }
+            <div className="w-full flex flex-col justify-center items-center">
+                {bookings.length > 0 ? (
+                    bookings.map((bookingItem: populatedBookingItem) => (
+                        <div className="bg-slate-200 rounded m-5 p-3 w-[95%] md:max-w-[450px] lg:max-w-[600px] flex flex-col items-end" key={bookingItem._id}>
+                            <table className="mx-auto border-separate border-spacing-2 rounded-md min-w-[40%]">
+                                <tbody>
+                                    <tr>
+                                        <td className="text-sm md:text-xl break-all">Booking ID</td>
+                                        <td className="text-sm md:text-xl break-all">{bookingItem._id}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="text-sm md:text-xl break-all">Hotel</td>
+                                        <td className="text-sm md:text-xl break-all">
+                                        {
+                                            editState.editing && editState.bookingId === bookingItem._id ? (
+                                                // Render editable field if currently editing this booking
+                                                <div className="w-[80%] p-3">
+                                                <div className='self-start pl-1 font-light text-gray-500'>Select hotel</div>
+                                                    <Select id="hotel" variant='standard' className="w-[100%]" onChange={(e)=>updateBookingHotel(e.target.value as string)}>
+                                                      {
+                                                          hotelData.map((elem,_)=>(
+                                                              <MenuItem key={elem.id} value={elem.id}>
+                                                                  {elem.name}
+                                                              </MenuItem>
+                                                          ))
+                                                      }
+                                                    </Select>
+                                                </div>
+                                            ) : (
+                                                // Render non-editable field if not editing this booking
+                                                bookingItem.hotel.name
+                                            )
+                                        }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="text-sm md:text-xl break-all">Book for</td>
+                                        <td className="text-sm md:text-xl break-all">
+                                        {
+                                            editState.editing && editState.bookingId === bookingItem._id ? (
+                                            // Render editable field if currently editing this booking
+                                            <DateReserve onDateChange={(value:Dayjs) => updateBookingDate(value)} />
+                                        ) : (
+                                            // Render non-editable field if not editing this booking
+                                            dayjs(bookingItem.bookDate).format('DD/MM/YYYY')
+                                        )}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div className="flex flex-row gap-2">
+                                {
+                                    editState.editing && editState.bookingId === bookingItem._id ? (
+                                        // Render save and cancel buttons if currently editing this booking
+                                        <>
+                                            <Button variant="outlined" onClick={updateBookingDetails}>Save</Button>
+                                            <Button variant="outlined" onClick={cancelEdit}>Cancel</Button>
+                                        </>
+                                    ) : (
+                                        // Render edit button if not editing this booking
+                                        <Button variant="outlined" onClick={() => editBooking(bookingItem._id)}>Edit</Button>
+                                    )
+                                }
+                                <Button
+                                    variant="outlined"
+                                    color="error"
+                                    className='text-red font-bold rounded w-fit transition-all'
+                                    onClick={() => removeBooking(bookingItem._id)}>
+                                    Remove
+                                </Button>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="w-full text-center text-white mt-4 text-2xl">
+                        You have no booking reservations
+                    </div>
+                )}
+            </div>
             {
           <div className='absolute top-0 left-0 z-[9999] hidden items-center w-full h-full bg-black/30' ref={popupBox}>
             <div className="relative flex flex-col gap-y-3 mx-auto p-2 justify-center text-center
@@ -80,6 +224,6 @@ export default function BookingList({ myBookingData }: { myBookingData: populate
           
           </div>
         }
-        </>
+        </div>
     )
 }
