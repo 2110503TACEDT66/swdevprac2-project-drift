@@ -1,4 +1,6 @@
-export default async function updateBooking(bid:string, token:string, hotel:string, bookDate:string) {
+import { HotelItem } from "../../../interface"
+
+export default async function updateBooking(bid:string, token:string, hotel:HotelItem, bookDate:string) {
     const response = await fetch("https://swd-hotel-backend.vercel.app/api/v1/bookings/" + bid,{
         method:"PUT",
         headers: {

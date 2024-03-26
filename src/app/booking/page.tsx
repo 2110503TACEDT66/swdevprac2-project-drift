@@ -1,11 +1,10 @@
 "use client"
 import DateReserve from '@/components/DateReserve';
-import { TextField, Select, MenuItem, Autocomplete, CircularProgress} from '@mui/material';
+import { Select, MenuItem, CircularProgress} from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { BookingItem } from '../../../interface';
 import { HotelItem } from '../../../interface';
 import Loading from './loading';
 import createBooking from '@/libs/createBooking';
@@ -116,14 +115,6 @@ export default function Home() {
                   }
                 </Select>
               </div>
-
-              {/* <Autocomplete
-                id="combo-box-demo"
-                options={hotelData}
-                sx={{ width: 300 }}
-                onChange={(e,value:string)=>setHotel(value)}
-                renderInput={(params) => <TextField {...params} label="Hospital" />}
-              /> */}
               
               <DateReserve onDateChange={(value:Dayjs)=>{setBookDate(value)}}/>
               

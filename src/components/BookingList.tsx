@@ -3,12 +3,13 @@ import { populatedBookingItem } from "../../interface"
 import deleteBooking from "@/libs/booking/deleteBooking"
 import { useSession } from "next-auth/react"
 import { useRef } from "react"
-
+import { useEffect } from "react"
+import Loading from "@/app/booking/loading"
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
-import { Button, CircularProgress } from "@mui/material"
+import { Button, Select, MenuItem } from "@mui/material"
 import dayjs, { Dayjs } from "dayjs"
-
+import { HotelItem } from "../../interface"
 import { useState } from "react";
 import updateBooking from "@/libs/booking/updateBooking"
 import DateReserve from "./DateReserve"
@@ -43,10 +44,25 @@ export default function BookingList({ myBookingData }: { myBookingData: populate
     const [editState, setEditState] = useState<{ editing: boolean, bookingId: string | null }>({ editing: false, bookingId: null });
     const [editedBooking, setEditedBooking] = useState<populatedBookingItem | null>(null);
 
+    const[hotelData, setHotelData] = useState<HotelItem[]>([]);
+    const[isLoading, setLoading] = useState(true);
+
+    useEffect(()=>{
+        fetch("https://swd-hotel-backend.vercel.app/api/v1/hotels")
+          .then(res => res.json())
+          .then(data =>{
+            setHotelData(data.data);
+            setLoading(false);
+          });
+      },[])
+      if(isLoading) return <Loading/>
+      if(hotelData.length==0) setHotelData([])
+    
+
     const editBooking = (bookingId: string) => {
         const bookingToEdit = bookings.find(booking => booking._id === bookingId);
         if (bookingToEdit) {
-            setEditedBooking(bookingToEdit);
+            setEditedBooking(bookingToEdit); // Current booking to edit
             setEditState({ editing: true, bookingId });
         }
     }
@@ -59,23 +75,47 @@ export default function BookingList({ myBookingData }: { myBookingData: populate
     
     const updateBookingDetails = async () => {
         try {
-            console.log(editState.bookingId)
-            console.log(session?.user.token)
-            if (editState.bookingId)
-                await updateBooking(editState.bookingId, session!.user.token, editedBooking!.hotel.name, editedBooking!.bookDate)
-            
-            setEditedBooking(null);
-            setEditState({ editing: false, bookingId: null });
+            if (editState.bookingId) {
+                // Update the booking on the backend
+                await updateBooking(editState.bookingId, session!.user.token, editedBooking!.hotel, editedBooking!.bookDate);
+                
+                // Update the local state with the edited booking data
+                setBookings(prevBookings => prevBookings.map(booking => {
+                    if (booking._id === editState.bookingId) {
+                        return editedBooking!;
+                    }
+                    return booking;
+                }));
+    
+                // Reset the edit state
+                setEditedBooking(null);
+                setEditState({ editing: false, bookingId: null });
+            }
         } catch (error) {
             console.error("Error updating booking:", error);
         }
     }
+    
 
     const updateBookingDate = (newDate: Dayjs) => {
         setEditedBooking(prevState => ({
             ...prevState!,
             bookDate: dayjs(newDate).format("YYYY/MM/DD")
         }));
+    }
+
+    const updateBookingHotel = (newHotel: string) => {
+        const findHotel = hotelData.find(h => h._id === newHotel)
+
+        console.log(findHotel)
+        if (!findHotel) {
+            return
+        }
+        
+        setEditedBooking(prevState => ({
+            ...prevState!,
+            hotel: findHotel
+        }))
     }
 
     return (
@@ -105,8 +145,18 @@ export default function BookingList({ myBookingData }: { myBookingData: populate
                                         {
                                             editState.editing && editState.bookingId === bookingItem._id ? (
                                                 // Render editable field if currently editing this booking
-                                                // TODO : Add Dropdown field
-                                                "dropdown field"
+                                                <div className="w-[80%] p-3">
+                                                <div className='self-start pl-1 font-light text-gray-500'>Select hotel</div>
+                                                    <Select id="hotel" variant='standard' className="w-[100%]" onChange={(e)=>updateBookingHotel(e.target.value as string)}>
+                                                      {
+                                                          hotelData.map((elem,_)=>(
+                                                              <MenuItem key={elem.id} value={elem.id}>
+                                                                  {elem.name}
+                                                              </MenuItem>
+                                                          ))
+                                                      }
+                                                    </Select>
+                                                </div>
                                             ) : (
                                                 // Render non-editable field if not editing this booking
                                                 bookingItem.hotel.name
