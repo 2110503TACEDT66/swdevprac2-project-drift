@@ -52,7 +52,7 @@ export default async function TopMenu(){
                         <div className="text-gray-100 line-clamp-1"> <QueueIcon fontSize="medium" /> &nbsp;&nbsp;Booking</div>
                     </Link>
 
-                    <Link href="/booking/manage" underline="none" className="w-full text-center p-2 pl-3 pr-3 text-2xl hover:bg-slate-800 text-gray-100">
+                    <Link href="/user" underline="none" className="w-full text-center p-2 pl-3 pr-3 text-2xl hover:bg-slate-800 text-gray-100">
                         <div className="text-gray-100 line-clamp-1"><QueueIcon fontSize="medium" /> &nbsp;&nbsp;Profile</div>
                     </Link>
 

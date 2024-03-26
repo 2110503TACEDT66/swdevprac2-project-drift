@@ -34,3 +34,16 @@
     bookDate: string;
     hotel:HotelItem
   }
+
+
+  export interface userProfile{
+    success:true,
+    data:{
+      name:string,
+      role:string,
+      email:string,
+      tel:string,
+      createdAt:Date,
+    }
+
+  }

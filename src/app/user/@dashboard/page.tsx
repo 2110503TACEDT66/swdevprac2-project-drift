@@ -3,7 +3,7 @@ import getUserProfile from "@/libs/getUserProfile"
 import { useRouter } from "next/navigation"
 import dayjs from 'dayjs';
 import createHotel from "@/libs/hotel/createHotel"
-import { HotelItem } from "../../../../interface";
+import { HotelItem, userProfile } from "../../../../interface";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react"
 
@@ -52,7 +52,7 @@ export default function DashboardPage() {
         setTimeout(()=>{setIsCreating(false);},1500)
     }
 
-    var [profile,setProfile] = useState<any>();
+    var [profile,setProfile] = useState<userProfile>();
     var createdAt;
     useEffect(()=>{
         const fetchProfile = async()=>{
@@ -73,7 +73,9 @@ export default function DashboardPage() {
         <main className=" mt-5 mx-auto space-y-7 px-3 w-full">
             <table className="bg-slate-100 mx-auto table-auto border-separate border-spacing-2 p-3 rounded-md max-w-xl min-w-[40%]">
                 <tbody>
-                    <tr><td colSpan={2} className="text-2xl text-center mb-3"> <AccountCircleIcon fontSize="medium" /> {profile.data.name} </td></tr>
+                    <tr><td colSpan={2} className="text-2xl text-center mb-3"> <AccountCircleIcon fontSize="medium" />
+                        {profile.data.name} <span className="text-lg text-gray-600"> ({profile!.data.role})</span>
+                    </td></tr>
                     <tr><td>Email</td><td>{profile!.data.email}</td></tr>
                     <tr><td>Tel.</td><td>{profile!.data.tel}</td></tr>
                     <tr><td>Member Since</td><td>{dayjs(createdAt).format("DD/MM/YYYY")}</td></tr>
