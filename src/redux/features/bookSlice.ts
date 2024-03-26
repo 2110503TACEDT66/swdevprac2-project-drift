@@ -12,8 +12,7 @@ export const bookSlice = createSlice({
     initialState,
     reducers: {
         addBooking: (state, action:PayloadAction<BookingItem>) => {
-            const existingBookingIndex = state.bookItems.findIndex(item => item.id === action.payload.id);
-
+            const existingBookingIndex = state.bookItems.findIndex(item => item._id === action.payload._id);
             if (existingBookingIndex !== -1) {
                 // If already booked, replace the old booking with the new one
                 state.bookItems[existingBookingIndex] = action.payload;
@@ -24,7 +23,7 @@ export const bookSlice = createSlice({
         },
         removeBooking: (state, action:PayloadAction<BookingItem>) => {
             const remainItems = state.bookItems.filter(obj => {
-                return obj.id !== action.payload.id
+                return obj._id !== action.payload._id
             })
 
             state.bookItems = remainItems;
